@@ -5,7 +5,9 @@ Spring Boot приложение для управления автомобил�
 ## 📌 Технологии
 - Java 17
 - Spring Boot 3
+- Rest API
 - PostgreSQL
+- Liquibase
 - Hibernate
 - Swagger (OpenAPI 3)
 
@@ -13,9 +15,20 @@ Spring Boot приложение для управления автомобил�
 1. Установи PostgreSQL и создай БД `cardealer_db`.
 2. Настрой `application.properties`:
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/cardealer_db  
-   spring.datasource.username=postgres  
+
+   spring.datasource.url=jdbc:postgresql://localhost:5432/cardealer_db
+   spring.datasource.username=postgres
    spring.datasource.password=postgres
+   spring.datasource.driver-class-name=org.postgresql.Driver
+   
+   spring.jpa.hibernate.ddl-auto=create
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+   spring.jpa.properties.hibernate.format_sql=true
+
+   spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
+   spring.liquibase.enabled=true
+   
 3. Запусти приложение 
    #### 'mvn'
     mvn spring-boot:run
