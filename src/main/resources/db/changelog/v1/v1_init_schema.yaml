@@ -4,7 +4,7 @@ databaseChangeLog:
       author: your_name
       changes:
         - createTable:
-            tableName: cars
+            tableName: car
             columns:
               - column:
                   name: id
@@ -23,7 +23,26 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
                   name: price
                   type: DOUBLE PRECISION
                   constraints:
                     nullable: false
+              - column:
+                  name: trunk_capacity
+                  type: DOUBLE PRECISION
+              - column:
+                  name: load_capacity
+                  type: DOUBLE PRECISION
+              - column:
+                  name: seating_capacity
+                  type: DOUBLE PRECISION

@@ -2,16 +2,19 @@ package com.example.autosale.dao;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-import java.util.Objects;
+import java.math.BigDecimal;
+
 @Entity
-@Table(name = "cars")
-public class Car {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "car_type")
+public abstract class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Brand can not be blank!")
     @Column(nullable = false)
@@ -21,25 +24,35 @@ public class Car {
     @Column(nullable = false)
     private String model;
 
+    @NotNull(message = "Year can not ba blank!")
+    @Column(nullable = false)
+    private Integer year;
+
+    @Enumerated(EnumType.STRING)
+    private CarType type;
+
     @PositiveOrZero(message = "Price must be positive or zero!")
     @Column(nullable = false)
-    private double price;
+    private BigDecimal price;
 
     public Car() {
     }
 
-    public Car(Integer id, String brand, String model, double price) {
+    public Car(Long id, String brand, String model, Integer year,
+               CarType type, BigDecimal price) {
         this.id = id;
         this.brand = brand;
         this.model = model;
+        this.year = year;
+        this.type = type;
         this.price = price;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,23 +72,27 @@ public class Car {
         this.model = model;
     }
 
-    public double getPrice() {
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public CarType getType() {
+        return type;
+    }
+
+    public void setType(CarType type) {
+        this.type = type;
+    }
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car car)) return false;
-        return Double.compare(price, car.price) == 0 && Objects.equals(id, car.id) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, brand, model, price);
     }
 }

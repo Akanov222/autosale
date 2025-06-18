@@ -47,7 +47,7 @@ Spring Boot приложение для управления автомобил�
 
 ### Добавить новую машину
 'bash'
-   #### ```curl -X POST http://localhost:8080/api/cars -H "Content-Type: application/json" -d '{"brand": "Toyota", "model": "Pajero", "price": 35000.0}'```
+   #### ```curl -X POST http://localhost:8080/api/cars -H "Content-Type: application/json" -d '{"brand": "Toyota", "model": "Pajero", "year": "2020", "type": "TRUCK", "price": 35000.0, "loadCapacity": "1500.0"}'```
 
 ## 📦 Модели данных
 ### Смотри в Swagger UI:

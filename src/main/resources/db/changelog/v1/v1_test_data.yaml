@@ -4,7 +4,7 @@ databaseChangeLog:
       author: your_name
       changes:
         - insert:
-            tableName: cars
+            tableName: car
             columns:
               - column:
                   name: brand
@@ -13,5 +13,20 @@ databaseChangeLog:
                   name: model
                   value: "Camry"
               - column:
+                  name: year
+                  value: "2021"
+              - column:
+                  name: type
+                  value: "SEDAN"
+              - column:
                   name: price
                   value: "25000.0"
+              - column:
+                  name: trunk_capacity
+                  value: "493.0"
+              - column:
+                  name: load_capacity
+                  value: "null"
+              - column:
+                  name: seating_capacity
+                  value: "null"
