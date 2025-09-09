@@ -5,11 +5,11 @@ Spring Boot приложение для управления автомобил�
 ## 📌 Технологии
 - Java 17
 - Spring Boot 3
-- Rest API
+- Docker
+- Swagger (OpenAPI 3)
 - PostgreSQL
 - Liquibase
 - Hibernate
-- Swagger (OpenAPI 3)
 
 ## 🚀 Запуск
 1. Установи PostgreSQL и создай БД `cardealer_db`.
