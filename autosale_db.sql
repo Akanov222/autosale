@@ -15,6 +15,6 @@ CREATE TABLE car (
 INSERT INTO car VALUES (1,'Chevrolet', 'COLODADO', 2010, 'TRUCK',
                         25000.0,null,456.0, null);
 
-
+SELECT * FROM car;
 
 

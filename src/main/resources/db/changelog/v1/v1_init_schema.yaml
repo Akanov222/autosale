@@ -3,6 +3,11 @@ databaseChangeLog:
       id: 1
       author: your_name
       changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: car
         - createTable:
             tableName: car
             columns:
@@ -34,15 +39,15 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: price
-                  type: DOUBLE PRECISION
+                  type: NUMERIC(10,2)
                   constraints:
                     nullable: false
               - column:
                   name: trunk_capacity
-                  type: DOUBLE PRECISION
+                  type: NUMERIC(10,2)
               - column:
                   name: load_capacity
-                  type: DOUBLE PRECISION
+                  type: NUMERIC(10,2)
               - column:
                   name: seating_capacity
-                  type: DOUBLE PRECISION
+                  type: NUMERIC(10,2)
