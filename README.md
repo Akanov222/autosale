@@ -11,27 +11,26 @@ Spring Boot приложение для управления автомобил�
 - Liquibase
 - Hibernate
 
-## 🚀 Запуск
-1. Установи PostgreSQL и создай БД `cardealer_db`.
-2. Настрой `application.properties`:
-   ```properties
+## 🚀 Запуск через Docker (рекомендуемый способ)
+### 1. Запусти все приложение с БД.
+'bash'
+#### ```docker-compose up -d```
+### 2. Остановка
+`bash'
+#### ```docker-compose up -d```
+### 3. Просмотр логов
+'bash'
+#### ```docker-compose logs -f autosale```
+3. Порты приложения
+      Приложение: http://localhost:8080
+      База данных: localhost:5432
+      Swagger UI: http://localhost:8080/swagger-ui.html
+      API Docs: http://localhost:8080/v3/api-docs
 
-   spring.datasource.url=jdbc:postgresql://localhost:5432/cardealer_db
-   spring.datasource.username=postgres
-   spring.datasource.password=postgres
-   spring.datasource.driver-class-name=org.postgresql.Driver
-   
-   spring.jpa.hibernate.ddl-auto=create
-   spring.jpa.show-sql=true
-   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-   spring.jpa.properties.hibernate.format_sql=true
-
-   spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
-   spring.liquibase.enabled=true
-   
-3. Запусти приложение 
-   #### 'mvn'
-    mvn spring-boot:run
+4. Docker информация
+   Имя сервиса: autosale
+   БД контейнер: cardealer_db
+   Том данных: postgres_data (сохраняется после остановки)
    
 ## 📚 API Документация
 Доступна через Swagger UI:  
