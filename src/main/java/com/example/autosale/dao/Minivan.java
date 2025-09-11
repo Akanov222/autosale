@@ -13,9 +13,9 @@ public class Minivan extends Car {
     public Minivan() {
     }
 
-    public Minivan(Long id, String brand, String model, Integer year,
+    public Minivan(String brand, String model, Integer year,
                    CarType type, BigDecimal price, Double seatingCapacity) {
-        super(id, brand, model, year, type, price);
+        super(brand, model, year, type, price);
         this.seatingCapacity = seatingCapacity;
     }
 

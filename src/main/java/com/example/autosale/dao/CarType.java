@@ -1,7 +1,14 @@
 package com.example.autosale.dao;
 
-public enum CarType {
-    SEDAN,
-    TRUCK,
-    MINIVAN
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class CarType extends BaseEntity{
+//    SEDAN,
+//    TRUCK,
+//    MINIVAN
+
+    @ManyToOne
+    private CarType carType;
 }

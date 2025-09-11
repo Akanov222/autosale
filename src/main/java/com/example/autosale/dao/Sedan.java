@@ -13,9 +13,9 @@ public class Sedan extends Car{
     public Sedan() {
     }
 
-    public Sedan(Long id, String brand, String model,
+    public Sedan(String brand, String model,
                  Integer year, CarType type, BigDecimal price) {
-        super(id, brand, model, year, type, price);
+        super(brand, model, year, type, price);
     }
 
     public Double getTrunkCapacity() {
