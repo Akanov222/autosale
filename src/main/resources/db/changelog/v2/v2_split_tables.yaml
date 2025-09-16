@@ -1,0 +1,190 @@
+databaseChangeLog:
+  - changeSet:
+      id: v2-1-create-sedan
+      author: autosale
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: sedan
+        - createTable:
+            tableName: sedan
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trunk_capacity
+                  type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: sedan
+            baseColumnNames: car_type_id
+            constraintName: fk_sedan_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
+
+  - changeSet:
+      id: v2-2-create-truck
+      author: autosale
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: truck
+        - createTable:
+            tableName: truck
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: load_capacity
+                  type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: truck
+            baseColumnNames: car_type_id
+            constraintName: fk_truck_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
+
+  - changeSet:
+      id: v2-3-create-minivan
+      author: autosale
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: minivan
+        - createTable:
+            tableName: minivan
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seating_capacity
+                  type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: minivan
+            baseColumnNames: car_type_id
+            constraintName: fk_minivan_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
+
+  - changeSet:
+      id: v2-4-migrate-data-from-car
+      author: autosale
+      changes:
+        - preConditions:
+            - onFail: CONTINUE
+            - tableExists:
+                tableName: car
+        - sql:
+            sql: |
+              INSERT INTO sedan (brand, model, year, car_type_id, price, trunk_capacity)
+              SELECT brand, model, year, car_type_id, price, trunk_capacity FROM car WHERE trunk_capacity IS NOT NULL;
+
+              INSERT INTO truck (brand, model, year, car_type_id, price, load_capacity)
+              SELECT brand, model, year, car_type_id, price, load_capacity FROM car WHERE load_capacity IS NOT NULL;
+
+              INSERT INTO minivan (brand, model, year, car_type_id, price, seating_capacity)
+              SELECT brand, model, year, car_type_id, price, seating_capacity FROM car WHERE seating_capacity IS NOT NULL;
+
+  - changeSet:
+      id: v2-5-drop-old-car
+      author: autosale
+      changes:
+        - preConditions:
+            - onFail: CONTINUE
+            - tableExists:
+                tableName: car
+        - dropTable:
+            tableName: car
+

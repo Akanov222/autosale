@@ -19,13 +19,12 @@ public record CarRequest(
         @NotNull(message = "Year can not be blank!")
         Integer year,
 
-        @NotNull
+        @NotNull(message = "Type can not be blank!")
         CarType type,
 
         @PositiveOrZero(message = "Price must be positive or zero!")
         BigDecimal price,
 
-        // Опциональные поля для специфичных характеристик
         Double trunkCapacity,
         Double loadCapacity,
         Double seatingCapacity

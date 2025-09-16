@@ -1,29 +1,25 @@
 package com.example.autosale.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
 @Entity
-@DiscriminatorValue("MINIVAN")
+@NoArgsConstructor
+@Table(name = "minivan")
 public class Minivan extends Car {
 
+    @Getter
+    @Setter
     @Column(name = "seating_capacity")
     private Double seatingCapacity;
-
-    public Minivan() {
-    }
 
     public Minivan(String brand, String model, Integer year,
                    CarType type, BigDecimal price, Double seatingCapacity) {
         super(brand, model, year, type, price);
-        this.seatingCapacity = seatingCapacity;
-    }
-
-    public Double getSeatingCapacity() {
-        return seatingCapacity;
-    }
-
-    public void setSeatingCapacity(Double seatingCapacity) {
         this.seatingCapacity = seatingCapacity;
     }
 }

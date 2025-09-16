@@ -1,14 +1,23 @@
 package com.example.autosale.dao;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-public class CarType extends BaseEntity{
-//    SEDAN,
-//    TRUCK,
-//    MINIVAN
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CarType {
 
-    @ManyToOne
-    private CarType carType;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    private String name;
 }

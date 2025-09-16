@@ -4,39 +4,43 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "car_type")
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public abstract class Car extends BaseEntity{
+@MappedSuperclass
+public abstract class Car {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Brand can not be blank!")
-    @Column(nullable = false)
     private String brand;
 
     @NotBlank(message = "Model can not be blank!")
-    @Column(nullable = false)
     private String model;
 
-    @NotNull(message = "Year can not ba blank!")
-    @Column(nullable = false)
-    private Integer year;
-
-//    @Enumerated(EnumType.STRING)
-    @OneToOne
-    @JoinColumn(name = "car_type")
+    @ManyToOne
+    @JoinColumn(name = "car_type_id")
     private CarType type;
 
+    @NotNull(message = "Year can not ba blank!")
+    private Integer year;
+
     @PositiveOrZero(message = "Price must be positive or zero!")
-    @Column(nullable = false)
     private BigDecimal price;
+
+    public Car(String brand, String model, Integer year, CarType type, BigDecimal price) {
+        this.brand = brand;
+        this.model = model;
+        this.type = type;
+        this.year = year;
+        this.price = price;
+    }
 }

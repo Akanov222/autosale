@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 2
+      id: 1
       author: your_name
       changes:
         - insert:
-            tableName: car
+            tableName: sedan
             columns:
               - column:
                   name: brand
@@ -16,17 +16,11 @@ databaseChangeLog:
                   name: year
                   value: "2021"
               - column:
-                  name: type
-                  value: "SEDAN"
+                  name: car_type
+                  value: "sedan"
               - column:
                   name: price
                   value: "25000.0"
               - column:
                   name: trunk_capacity
                   value: "493.0"
-              - column:
-                  name: load_capacity
-                  value: "null"
-              - column:
-                  name: seating_capacity
-                  value: "null"

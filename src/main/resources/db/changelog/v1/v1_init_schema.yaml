@@ -7,6 +7,63 @@ databaseChangeLog:
             - onFail: MARK_RAN
             - not:
                 - tableExists:
+                    tableName: car_type
+        - createTable:
+            tableName: car_type
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: code
+                  value: 1
+              - column:
+                  name: name
+                  value: "SEDAN"
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: code
+                  value: 2
+              - column:
+                  name: name
+                  value: "TRUCK"
+        - insert:
+            tableName: car_type
+            columns:
+              - column:
+                  name: code
+                  value: 3
+              - column:
+                  name: name
+                  value: "MINIVAN"
+
+  - changeSet:
+      id: 2
+      author: your_name
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
                     tableName: car
         - createTable:
             tableName: car
@@ -33,8 +90,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: type
-                  type: VARCHAR(20)
+                  name: car_type_id
+                  type: integer
                   constraints:
                     nullable: false
               - column:
@@ -51,3 +108,9 @@ databaseChangeLog:
               - column:
                   name: seating_capacity
                   type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: car
+            baseColumnNames: car_type_id
+            constraintName: fk_car_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
