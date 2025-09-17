@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -24,14 +25,18 @@ public class CarController {
     private final SedanRepository sedanRepository;
     private final TruckRepository truckRepository;
     private final MinivanRepository minivanRepository;
+    private final CarTypeService carTypeService;
+    private final CarFactory carFactory;
 
     public CarController(SedanRepository sedanRepository,
                          TruckRepository truckRepository,
                          MinivanRepository minivanRepository,
-                         CarTypeService carTypeService) {
+                         CarTypeService carTypeService, CarTypeService carTypeService1, CarFactory carFactory) {
         this.sedanRepository = sedanRepository;
         this.truckRepository = truckRepository;
         this.minivanRepository = minivanRepository;
+        this.carTypeService = carTypeService1;
+        this.carFactory = carFactory;
     }
 
     @Operation(summary = "Получить все автомобили", description = "Возвращает автомобили всех типов")
@@ -68,15 +73,14 @@ public class CarController {
     @ApiResponse(responseCode = "404", description = "Автомобиль не найден")
     @GetMapping("/{type}/{id}")
     public ResponseEntity<CarResponse> getOneCarById(@PathVariable String type, @PathVariable Long id) {
-        String t = type.toUpperCase();
-        return switch (t) {
+        return switch (type.toUpperCase()) {
             case "SEDAN" -> sedanRepository.findById(id).map(CarResponse::fromCar)
                     .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
             case "TRUCK" -> truckRepository.findById(id).map(CarResponse::fromCar)
                     .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
             case "MINIVAN" -> minivanRepository.findById(id).map(CarResponse::fromCar)
                     .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-            default -> throw new IllegalStateException("Unexpected value: " + t);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
 
@@ -84,32 +88,57 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "Создано")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации")
     @PostMapping("/{type}")
-    public ResponseEntity<String> create(@PathVariable String type, @Valid @RequestBody CarRequest req) {
-        String t = type.toUpperCase();
-        Car car;
-        switch (t) {
-            case "SEDAN" -> car = new Sedan();
-            case "TRUCK" -> car = new Truck();
-            case "MINIVAN" -> car = new Minivan();
-            default -> {
-                throw new IllegalStateException("Unexpected value: " + t);
-                return ResponseEntity.notFound().build();
-            }
-        };
-        car.setBrand(req.brand());
-        car.setModel(req.model());
-        car.setYear(req.year());
-        car.setType(req.type());
-        car.setPrice(req.price());
+    public ResponseEntity<String> createCar(@PathVariable String type, @Valid @RequestBody CarRequest request) {
+        try {
+            validateRequestType(type, request);
 
-        switch (t) {
-            case "SEDAN" -> sedanRepository.save(car);
-            case "TRUCK" -> truckRepository.save(car);
-            case "MINIVAN" -> minivanRepository.save(car);
-            default -> throw new IllegalStateException("Unexpected value: " + t);
-        };
-        return ResponseEntity.ok("Auto Created");
+            Car car = carFactory.createCar(type, request);
+            car.setType(carTypeService.getCarTypeByName(type.toUpperCase()));
+
+            return saveCarByType(type, car);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
+
+    private void validateRequestType(String type, CarRequest request) {
+        String upperType = type.toUpperCase();
+
+        if (upperType.equals("SEDAN") && !(request instanceof SedanRequest)) {
+            throw new IllegalArgumentException("For SEDAN type, use SedanRequest DTO");
+        }
+        if (upperType.equals("TRUCK") && !(request instanceof TruckRequest)) {
+            throw new IllegalArgumentException("For TRUCK type, use TruckRequest DTO");
+        }
+        if (upperType.equals("MINIVAN") && !(request instanceof MinivanRequest)) {
+            throw new IllegalArgumentException("For MINIVAN type, use MinivanRequest DTO");
+        }
+    }
+
+    private ResponseEntity<String> saveCarByType(String type, Car car) {
+        switch (type.toUpperCase()) {
+            case "SEDAN" -> {
+                Sedan sedan = (Sedan) car;
+                sedanRepository.save(sedan);
+                return ResponseEntity.ok("Sedan created with ID: " + sedan.getId());
+            }
+            case "TRUCK" -> {
+                Truck truck = (Truck) car;
+                truckRepository.save(truck);
+                return ResponseEntity.ok("Truck created with ID: " + truck.getId());
+            }
+            case "MINIVAN" -> {
+                Minivan minivan = (Minivan) car;
+                minivanRepository.save(minivan);
+                return ResponseEntity.ok("Minivan created with ID: " + minivan.getId());
+            }
+            default -> throw new IllegalArgumentException("Unknown car type: " + type);
+        }
+    }
+
 
    /* @io.swagger.v3.oas.annotations.Operation(summary = "Обновить автомобиль подтипа", description = "Обновляет запись. Тип-специфичные поля валидируются контроллером подтипа")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Обновлено")
