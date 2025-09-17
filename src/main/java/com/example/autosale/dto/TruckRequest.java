@@ -1,7 +1,6 @@
 package com.example.autosale.dto;
 
 import com.example.autosale.dao.CarType;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
@@ -11,25 +10,18 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-//POST, PUT
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarRequest {
-
-        @NotBlank(message = "Brand can not be blank!")
+public class TruckRequest extends CarRequest {
         String brand;
-
-        @NotBlank(message = "Model can not be blank!")
         String model;
-
-        @NotNull(message = "Year can not be blank!")
         Integer year;
-
-        @NotNull(message = "Type can not be blank!")
         CarType type;
-
-        @PositiveOrZero(message = "Price must be positive or zero!")
         BigDecimal price;
+
+        @NotNull(message = "Load capacity is required")
+        @PositiveOrZero(message = "Load capacity must be positive")
+        Double loadCapacity;
 }

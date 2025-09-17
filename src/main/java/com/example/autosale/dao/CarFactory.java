@@ -1,7 +1,12 @@
 package com.example.autosale.dao;
 
 import com.example.autosale.dto.CarRequest;
+import com.example.autosale.dto.MinivanRequest;
+import com.example.autosale.dto.SedanRequest;
+import com.example.autosale.dto.TruckRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CarFactory {
 
     public Car createCar(String type, CarRequest request) {
@@ -10,30 +15,31 @@ public class CarFactory {
                 SedanRequest sedanRequest = (SedanRequest) request;
                 Sedan sedan = new Sedan();
                 setCommonFields(request, sedan);
-                sedan.setTrunkCapacity(sedanRequest.trunkCapacity);
+                sedan.setTrunkCapacity(sedanRequest.getTrunkCapacity());
                 yield sedan;
             }
             case "MINIVAN" -> {
                 MinivanRequest minivanRequest = (MinivanRequest) request;
                 Minivan minivan = new Minivan();
                 setCommonFields(request, minivan);
-                minivan.setSeatingCapacity(minivanRequest.seatingCapacity);
+                minivan.setSeatingCapacity(minivanRequest.getSeatingCapacity());
                 yield minivan;
             }
             case "TRUCK" -> {
                 TruckRequest truckRequest = (TruckRequest) request;
-                Truck truck = new Truck()
+                Truck truck = new Truck();
                 setCommonFields(request, truck);
-                truck.setLoadCapacity(truckRequest.loadCapacity);
+                truck.setLoadCapacity(truckRequest.getLoadCapacity());
                 yield truck;
             }
+            default -> throw new IllegalStateException("Unexpected value: " + type.toUpperCase());
         };
     }
 
     private void setCommonFields(CarRequest request, Car car) {
-        car.setBrand(request.brand());
-        car.setModel(request.model());
-        car.setYear(request.year());
-        car.setPrice(request.price());
+        car.setBrand(request.getBrand());
+        car.setModel(request.getModel());
+        car.setYear(request.getYear());
+        car.setPrice(request.getPrice());
     }
 }

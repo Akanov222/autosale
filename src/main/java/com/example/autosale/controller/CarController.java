@@ -1,8 +1,7 @@
 package com.example.autosale.controller;
 
 import com.example.autosale.dao.*;
-import com.example.autosale.dto.CarRequest;
-import com.example.autosale.dto.CarResponse;
+import com.example.autosale.dto.*;
 import com.example.autosale.repository.MinivanRepository;
 import com.example.autosale.repository.SedanRepository;
 import com.example.autosale.repository.TruckRepository;
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -31,11 +29,12 @@ public class CarController {
     public CarController(SedanRepository sedanRepository,
                          TruckRepository truckRepository,
                          MinivanRepository minivanRepository,
-                         CarTypeService carTypeService, CarTypeService carTypeService1, CarFactory carFactory) {
+                         CarTypeService carTypeService,
+                         CarFactory carFactory) {
         this.sedanRepository = sedanRepository;
         this.truckRepository = truckRepository;
         this.minivanRepository = minivanRepository;
-        this.carTypeService = carTypeService1;
+        this.carTypeService = carTypeService;
         this.carFactory = carFactory;
     }
 
@@ -107,13 +106,13 @@ public class CarController {
     private void validateRequestType(String type, CarRequest request) {
         String upperType = type.toUpperCase();
 
-        if (upperType.equals("SEDAN") && !(request instanceof SedanRequest)) {
+        if (upperType.equals("SEDAN")) {
             throw new IllegalArgumentException("For SEDAN type, use SedanRequest DTO");
         }
-        if (upperType.equals("TRUCK") && !(request instanceof TruckRequest)) {
+        if (upperType.equals("TRUCK")) {
             throw new IllegalArgumentException("For TRUCK type, use TruckRequest DTO");
         }
-        if (upperType.equals("MINIVAN") && !(request instanceof MinivanRequest)) {
+        if (upperType.equals("MINIVAN")) {
             throw new IllegalArgumentException("For MINIVAN type, use MinivanRequest DTO");
         }
     }
