@@ -7,6 +7,9 @@ import com.example.autosale.repository.SedanRepository;
 import com.example.autosale.repository.TruckRepository;
 import com.example.autosale.service.CarTypeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,18 +29,21 @@ public class CarController {
     private final MinivanRepository minivanRepository;
     private final CarTypeService carTypeService;
     private final CarFactory carFactory;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     @Autowired
     public CarController(SedanRepository sedanRepository,
                          TruckRepository truckRepository,
                          MinivanRepository minivanRepository,
                          CarTypeService carTypeService,
-                         CarFactory carFactory) {
+                         CarFactory carFactory,
+                         com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
         this.sedanRepository = sedanRepository;
         this.truckRepository = truckRepository;
         this.minivanRepository = minivanRepository;
         this.carTypeService = carTypeService;
         this.carFactory = carFactory;
+        this.objectMapper = objectMapper;
     }
 
     @Operation(summary = "Получить все автомобили", description = "Возвращает автомобили всех типов")
@@ -89,10 +95,10 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "Создано")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации")
     @PostMapping("/{type}")
-    public ResponseEntity<String> createCar(@PathVariable String type, @Valid @RequestBody CarRequest request) {
+    @RequestBody(required = true, content = @Content(schema = @Schema(oneOf = {SedanRequest.class, TruckRequest.class, MinivanRequest.class})))
+    public ResponseEntity<String> createCar(@PathVariable String type, @org.springframework.web.bind.annotation.RequestBody java.util.Map<String, Object> payload) {
         try {
-            validateRequestType(type, request);
-
+            CarRequest request = convertByType(type, payload);
             Car car = carFactory.createCar(type, request);
             car.setType(carTypeService.getCarTypeByName(type.toUpperCase()));
 
@@ -140,33 +146,79 @@ public class CarController {
         }
     }
 
-
-   /* @io.swagger.v3.oas.annotations.Operation(summary = "Обновить автомобиль подтипа", description = "Обновляет запись. Тип-специфичные поля валидируются контроллером подтипа")
+    @io.swagger.v3.oas.annotations.Operation(summary = "Обновить автомобиль подтипа", description = "Обновляет запись. Тип-специфичные поля валидируются контроллером подтипа")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Обновлено")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Ошибка валидации")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Не найдено")
-    @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, @Valid @RequestBody CarRequest req, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result.getFieldError() != null ? result.getFieldError().getDefaultMessage() : "Validation error");
-        }
-        try {
-            validateRequiredOnUpdate(req);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-        return repository.findById(id).map(car -> {
-            CarType carType = carTypeService.getCarTypeByName(fixedTypeName);
-            car.setBrand(req.brand());
-            car.setModel(req.model());
-            car.setYear(req.year());
-            car.setType(carType);
-            car.setPrice(req.price());
-            applySubtypeFieldsOnUpdate(car, req);
-            repository.save(car);
-            return ResponseEntity.ok(fixedTypeName + " updated");
-        }).orElse(ResponseEntity.notFound().build());
-    }*/
+    @PutMapping("/{type}/{id}")
+    @RequestBody(required = true, content = @Content(schema = @Schema(oneOf = {SedanRequest.class, TruckRequest.class, MinivanRequest.class})))
+    public ResponseEntity<String> update(@PathVariable String type, @PathVariable Long id, @org.springframework.web.bind.annotation.RequestBody java.util.Map<String, Object> payload) {
+       try {
+           CarRequest request = convertByType(type, payload);
+           Car car = carFactory.createCar(type, request);
+           car.setType(carTypeService.getCarTypeByName(type.toUpperCase()));
+           return updateCarByTypeAndId(type, car, id);
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       } catch (Exception e) {
+           return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+       }
+    }
+
+    private CarRequest convertByType(String type, java.util.Map<String, Object> payload) {
+        String t = type.toUpperCase();
+        return switch (t) {
+            case "SEDAN" -> objectMapper.convertValue(payload, SedanRequest.class);
+            case "TRUCK" -> objectMapper.convertValue(payload, TruckRequest.class);
+            case "MINIVAN" -> objectMapper.convertValue(payload, MinivanRequest.class);
+            default -> throw new IllegalArgumentException("Unknown car type: " + type);
+        };
+    }
+
+    private ResponseEntity<String> updateCarByTypeAndId(String type, Car updatedCar, Long id) {
+        return switch (type.toUpperCase()) {
+            case "SEDAN" -> sedanRepository.findById(id).map(existing -> {
+                Sedan existingSedan = existing;
+                Sedan source = (Sedan) updatedCar;
+                existingSedan.setBrand(source.getBrand());
+                existingSedan.setModel(source.getModel());
+                existingSedan.setYear(source.getYear());
+                existingSedan.setType(source.getType());
+                existingSedan.setPrice(source.getPrice());
+                existingSedan.setTrunkCapacity(source.getTrunkCapacity());
+                sedanRepository.save(existingSedan);
+                return ResponseEntity.ok("Sedan updated with ID: " + existingSedan.getId());
+            }).orElse(ResponseEntity.notFound().build());
+
+            case "TRUCK" -> truckRepository.findById(id).map(existing -> {
+                Truck existingTruck = existing;
+                Truck source = (Truck) updatedCar;
+                existingTruck.setBrand(source.getBrand());
+                existingTruck.setModel(source.getModel());
+                existingTruck.setYear(source.getYear());
+                existingTruck.setType(source.getType());
+                existingTruck.setPrice(source.getPrice());
+                existingTruck.setLoadCapacity(source.getLoadCapacity());
+                truckRepository.save(existingTruck);
+                return ResponseEntity.ok("Truck updated with ID: " + existingTruck.getId());
+            }).orElse(ResponseEntity.notFound().build());
+
+            case "MINIVAN" -> minivanRepository.findById(id).map(existing -> {
+                Minivan existingMinivan = existing;
+                Minivan source = (Minivan) updatedCar;
+                existingMinivan.setBrand(source.getBrand());
+                existingMinivan.setModel(source.getModel());
+                existingMinivan.setYear(source.getYear());
+                existingMinivan.setType(source.getType());
+                existingMinivan.setPrice(source.getPrice());
+                existingMinivan.setSeatingCapacity(source.getSeatingCapacity());
+                minivanRepository.save(existingMinivan);
+                return ResponseEntity.ok("Minivan updated with ID: " + existingMinivan.getId());
+            }).orElse(ResponseEntity.notFound().build());
+
+            default -> throw new IllegalArgumentException("Unknown car type: " + type);
+        };
+    }
 
 
     @Operation(summary = "Удалить автомобиль по ID", description = "Удаляет запись данного подтипа по идентификатору")
