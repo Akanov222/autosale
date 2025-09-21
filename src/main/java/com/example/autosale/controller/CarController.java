@@ -8,8 +8,6 @@ import com.example.autosale.repository.TruckRepository;
 import com.example.autosale.service.CarTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,41 +98,18 @@ public class CarController {
                     "тип-специфичные поля валидируются контроллером подтипа")
     @ApiResponse(responseCode = "200", description = "Создано")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации")
-    @PostMapping("/sedan")
-    public ResponseEntity<String> createSedan(@RequestBody SedanRequest request) {
-        Sedan sedan = new Sedan();
-        setCommonFields(request, sedan);
-        sedan.setCarTypeId(carTypeService.getCarTypeByName("SEDAN").getId());
-        sedan.setTrunkCapacity(request.getTrunkCapacity());
-        sedanRepository.save(sedan);
-        return ResponseEntity.ok("Sedan created with ID: " + sedan.getId());
-    }
-
-    @PostMapping("/truck")
-    public ResponseEntity<String> createTruck(@RequestBody TruckRequest request) {
-        Truck truck = new Truck();
-        setCommonFields(request, truck);
-        truck.setCarTypeId(carTypeService.getCarTypeByName("TRUCK").getId());
-        truck.setLoadCapacity(request.getLoadCapacity());
-        truckRepository.save(truck);
-        return ResponseEntity.ok("Truck created with ID: " + truck.getId());
-    }
-
-    @PostMapping("/minivan")
-    public ResponseEntity<String> createMinivan(@RequestBody MinivanRequest request) {
-        Minivan minivan = new Minivan();
-        setCommonFields(request, minivan);
-        minivan.setCarTypeId(carTypeService.getCarTypeByName("MINIVAN").getId());
-        minivan.setSeatingCapacity(request.getSeatingCapacity());
-        minivanRepository.save(minivan);
-        return ResponseEntity.ok("Minivan created with ID: " + minivan.getId());
-    }
-
-    private void setCommonFields(CarRequest request, Car car) {
-        car.setBrand(request.getBrand());
-        car.setModel(request.getModel());
-        car.setYear(request.getYear());
-        car.setPrice(request.getPrice());
+    @PostMapping("/{type}")
+    public ResponseEntity<String> createSedan(@PathVariable String type,
+                                              @RequestBody Map<String, Object> payload) {
+        try {
+            CarRequest request = convertByType(type, payload);
+            Car car = carFactory.createCar(type, request);
+            return createCarByType(type, car);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @Operation(summary = "Обновить автомобиль подтипа",
@@ -164,6 +139,50 @@ public class CarController {
             case "SEDAN" -> objectMapper.convertValue(payload, SedanRequest.class);
             case "TRUCK" -> objectMapper.convertValue(payload, TruckRequest.class);
             case "MINIVAN" -> objectMapper.convertValue(payload, MinivanRequest.class);
+            default -> throw new IllegalArgumentException("Unknown car type: " + type);
+        };
+    }
+
+    private ResponseEntity<String> createCarByType(String type, Car createCar) {
+        return switch (type.toUpperCase()) {
+            case "SEDAN" -> {
+                Sedan existingSedan = new Sedan();
+                Sedan source = (Sedan) createCar;
+                existingSedan.setBrand(source.getBrand());
+                existingSedan.setModel(source.getModel());
+                existingSedan.setYear(source.getYear());
+                existingSedan.setCarTypeId(source.getCarTypeId());
+                existingSedan.setPrice(source.getPrice());
+                existingSedan.setTrunkCapacity(source.getTrunkCapacity());
+                sedanRepository.save(existingSedan);
+                yield  ResponseEntity.ok("Sedan created");
+            }
+
+            case "TRUCK" -> {
+                Truck existingTruck = new Truck();
+                Truck source = (Truck) createCar;
+                existingTruck.setBrand(source.getBrand());
+                existingTruck.setModel(source.getModel());
+                existingTruck.setYear(source.getYear());
+                existingTruck.setCarTypeId(source.getCarTypeId());
+                existingTruck.setPrice(source.getPrice());
+                existingTruck.setLoadCapacity(source.getLoadCapacity());
+                truckRepository.save(existingTruck);
+                yield ResponseEntity.ok("Truck created");
+            }
+
+            case "MINIVAN" -> {
+                Minivan existingMinivan = new Minivan();
+                Minivan source = (Minivan) createCar;
+                existingMinivan.setBrand(source.getBrand());
+                existingMinivan.setModel(source.getModel());
+                existingMinivan.setYear(source.getYear());
+                existingMinivan.setCarTypeId(source.getCarTypeId());
+                existingMinivan.setPrice(source.getPrice());
+                existingMinivan.setSeatingCapacity(source.getSeatingCapacity());
+                minivanRepository.save(existingMinivan);
+                yield ResponseEntity.ok("Minivan created");
+            }
             default -> throw new IllegalArgumentException("Unknown car type: " + type);
         };
     }
