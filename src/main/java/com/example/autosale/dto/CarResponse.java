@@ -9,7 +9,7 @@ public record CarResponse(
         String brand,
         String model,
         Integer year,
-        CarType type,
+//        Long carTypeId,
         BigDecimal price,
 
         Optional<Double> trunkCapacity,
@@ -21,7 +21,6 @@ public record CarResponse(
                 car.getBrand(),
                 car.getModel(),
                 car.getYear(),
-                car.getType(),
                 car.getPrice(),
                 Optional.ofNullable(car instanceof Sedan ? ((Sedan) car).getTrunkCapacity() : null),
                 Optional.ofNullable(car instanceof Truck ? ((Truck) car).getLoadCapacity() : null),

@@ -1,5 +1,6 @@
 package com.example.autosale.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -25,6 +26,9 @@ public class CarRequest {
 
         @NotNull(message = "Year can not be blank!")
         Integer year;
+
+        @Nullable
+        Long carTypeId;
 
         @PositiveOrZero(message = "Price must be positive or zero!")
         BigDecimal price;

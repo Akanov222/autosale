@@ -4,10 +4,17 @@ import com.example.autosale.dto.CarRequest;
 import com.example.autosale.dto.MinivanRequest;
 import com.example.autosale.dto.SedanRequest;
 import com.example.autosale.dto.TruckRequest;
+import com.example.autosale.service.CarTypeService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CarFactory {
+
+    private final CarTypeService carTypeService;
+
+    public CarFactory(CarTypeService carTypeService) {
+        this.carTypeService = carTypeService;
+    }
 
     public Car createCar(String type, CarRequest request) {
         return switch (type.toUpperCase()) {
@@ -15,6 +22,7 @@ public class CarFactory {
                 SedanRequest sedanRequest = (SedanRequest) request;
                 Sedan sedan = new Sedan();
                 setCommonFields(request, sedan);
+                sedan.setCarTypeId(carTypeService.getCarTypeByName(type.toUpperCase()).getId());
                 sedan.setTrunkCapacity(sedanRequest.getTrunkCapacity());
                 yield sedan;
             }
@@ -22,6 +30,7 @@ public class CarFactory {
                 MinivanRequest minivanRequest = (MinivanRequest) request;
                 Minivan minivan = new Minivan();
                 setCommonFields(request, minivan);
+                minivan.setCarTypeId(carTypeService.getCarTypeByName(type.toUpperCase()).getId());
                 minivan.setSeatingCapacity(minivanRequest.getSeatingCapacity());
                 yield minivan;
             }
@@ -29,6 +38,7 @@ public class CarFactory {
                 TruckRequest truckRequest = (TruckRequest) request;
                 Truck truck = new Truck();
                 setCommonFields(request, truck);
+                truck.setCarTypeId(carTypeService.getCarTypeByName(type.toUpperCase()).getId());
                 truck.setLoadCapacity(truckRequest.getLoadCapacity());
                 yield truck;
             }
