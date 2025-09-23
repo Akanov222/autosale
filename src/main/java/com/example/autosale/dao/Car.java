@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,13 +33,13 @@ public abstract class Car {
 
     @Nullable
     @JoinColumn(name = "car_type_id")
-    private Long carTypeId;
+    public Long carTypeId;
 
     @PositiveOrZero(message = "Price must be positive or zero!")
     private BigDecimal price;
 
-    public Car(String brand, String model, Integer year, Long carTypeId,
-               BigDecimal price) {
+    public Car(String brand, String model, Integer year,
+               @Nullable Long carTypeId, BigDecimal price) {
         this.brand = brand;
         this.model = model;
         this.year = year;

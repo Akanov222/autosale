@@ -12,11 +12,6 @@ import java.math.BigDecimal;
 @Table(name = "sedan")
 public class Sedan extends Car{
 
-//    @Getter
-//    @Setter
-//    @JoinColumn(name = "car_type_id")
-//    private Long carTypeId;
-
     @Getter
     @Setter
     @Column(name = "trunk_capacity")
@@ -25,7 +20,6 @@ public class Sedan extends Car{
     public Sedan(String brand, String model,
                  Integer year, Long carTypeId, BigDecimal price, Double trunkCapacity) {
         super(brand, model, year, carTypeId, price);
-//        this.carTypeId = carTypeId;
         this.trunkCapacity = trunkCapacity;
     }
 }

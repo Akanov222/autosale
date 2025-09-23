@@ -5,6 +5,7 @@ import com.example.autosale.dto.*;
 import com.example.autosale.repository.MinivanRepository;
 import com.example.autosale.repository.SedanRepository;
 import com.example.autosale.repository.TruckRepository;
+import com.example.autosale.service.CarService;
 import com.example.autosale.service.CarTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,7 @@ public class CarController {
     private final MinivanRepository minivanRepository;
     private final CarTypeService carTypeService;
     private final CarFactory carFactory;
+    private final CarService carService;
     private final ObjectMapper objectMapper;
 
     @Autowired
@@ -34,13 +36,14 @@ public class CarController {
                          TruckRepository truckRepository,
                          MinivanRepository minivanRepository,
                          CarTypeService carTypeService,
-                         CarFactory carFactory,
+                         CarFactory carFactory, CarService carService,
                          ObjectMapper objectMapper) {
         this.sedanRepository = sedanRepository;
         this.truckRepository = truckRepository;
         this.minivanRepository = minivanRepository;
         this.carTypeService = carTypeService;
         this.carFactory = carFactory;
+        this.carService = carService;
         this.objectMapper = objectMapper;
     }
 
@@ -51,11 +54,9 @@ public class CarController {
     @GetMapping
     public List<CarResponse> getAllCars() {
         return Stream.of(
-                        sedanRepository.findAll().stream(),
-                        truckRepository.findAll().stream(),
-                        minivanRepository.findAll().stream()
+                        "SEDAN", "TRUCK", "MINIVAN"
                 )
-                .flatMap(s -> s)
+                .flatMap(type -> carService.getRepository(type).findAll().stream())
                 .map(CarResponse::fromCar)
                 .toList();
     }
@@ -66,13 +67,9 @@ public class CarController {
     @ApiResponse(responseCode = "400", description = "Ошибка валидации")
     @GetMapping("/{type}")
     public List<CarResponse> getCarsByType(@PathVariable String type) {
-        String t = type.toUpperCase();
-        return switch (t) {
-            case "SEDAN" -> sedanRepository.findAll().stream().map(CarResponse::fromCar).toList();
-            case "TRUCK" -> truckRepository.findAll().stream().map(CarResponse::fromCar).toList();
-            case "MINIVAN" -> minivanRepository.findAll().stream().map(CarResponse::fromCar).toList();
-            default -> List.of();
-        };
+        return carService.getRepository(type).findAll().stream()
+                .map(CarResponse::fromCar)
+                .toList();
     }
 
     @Operation(summary = "Получить автомобиль по ID",
@@ -82,15 +79,10 @@ public class CarController {
     @GetMapping("/{type}/{id}")
     public ResponseEntity<CarResponse> getOneCarById(@PathVariable String type,
                                                      @PathVariable Long id) {
-        return switch (type.toUpperCase()) {
-            case "SEDAN" -> sedanRepository.findById(id).map(CarResponse::fromCar)
-                    .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-            case "TRUCK" -> truckRepository.findById(id).map(CarResponse::fromCar)
-                    .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-            case "MINIVAN" -> minivanRepository.findById(id).map(CarResponse::fromCar)
-                    .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        };
+        return carService.getRepository(type).findById(id)
+                .map(CarResponse::fromCar)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Создать автомобиль подтипа",
@@ -102,15 +94,16 @@ public class CarController {
     public ResponseEntity<String> createSedan(@PathVariable String type,
                                               @RequestBody Map<String, Object> payload) {
         try {
-            CarRequest request = convertByType(type, payload);
+            CarRequest request = carService.convertRequest(type, payload);
             Car car = carFactory.createCar(type, request);
-            return createCarByType(type, car);
+            return carService.saveCar(type, car);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+/*
 
     @Operation(summary = "Обновить автомобиль подтипа",
             description = "Обновляет запись. Тип-специфичные поля валидируются контроллером подтипа")
@@ -132,106 +125,8 @@ public class CarController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
-
-    private CarRequest convertByType(String type, Map<String, Object> payload) {
-        String t = type.toUpperCase();
-        return switch (t) {
-            case "SEDAN" -> objectMapper.convertValue(payload, SedanRequest.class);
-            case "TRUCK" -> objectMapper.convertValue(payload, TruckRequest.class);
-            case "MINIVAN" -> objectMapper.convertValue(payload, MinivanRequest.class);
-            default -> throw new IllegalArgumentException("Unknown car type: " + type);
-        };
-    }
-
-    private ResponseEntity<String> createCarByType(String type, Car createCar) {
-        return switch (type.toUpperCase()) {
-            case "SEDAN" -> {
-                Sedan existingSedan = new Sedan();
-                Sedan source = (Sedan) createCar;
-                existingSedan.setBrand(source.getBrand());
-                existingSedan.setModel(source.getModel());
-                existingSedan.setYear(source.getYear());
-                existingSedan.setCarTypeId(source.getCarTypeId());
-                existingSedan.setPrice(source.getPrice());
-                existingSedan.setTrunkCapacity(source.getTrunkCapacity());
-                sedanRepository.save(existingSedan);
-                yield  ResponseEntity.ok("Sedan created");
-            }
-
-            case "TRUCK" -> {
-                Truck existingTruck = new Truck();
-                Truck source = (Truck) createCar;
-                existingTruck.setBrand(source.getBrand());
-                existingTruck.setModel(source.getModel());
-                existingTruck.setYear(source.getYear());
-                existingTruck.setCarTypeId(source.getCarTypeId());
-                existingTruck.setPrice(source.getPrice());
-                existingTruck.setLoadCapacity(source.getLoadCapacity());
-                truckRepository.save(existingTruck);
-                yield ResponseEntity.ok("Truck created");
-            }
-
-            case "MINIVAN" -> {
-                Minivan existingMinivan = new Minivan();
-                Minivan source = (Minivan) createCar;
-                existingMinivan.setBrand(source.getBrand());
-                existingMinivan.setModel(source.getModel());
-                existingMinivan.setYear(source.getYear());
-                existingMinivan.setCarTypeId(source.getCarTypeId());
-                existingMinivan.setPrice(source.getPrice());
-                existingMinivan.setSeatingCapacity(source.getSeatingCapacity());
-                minivanRepository.save(existingMinivan);
-                yield ResponseEntity.ok("Minivan created");
-            }
-            default -> throw new IllegalArgumentException("Unknown car type: " + type);
-        };
-    }
-
-            private ResponseEntity<String> updateCarByTypeAndId(String type, Car updatedCar, Long id) {
-        return switch (type.toUpperCase()) {
-            case "SEDAN" -> sedanRepository.findById(id).map(existing -> {
-                Sedan existingSedan = existing;
-                Sedan source = (Sedan) updatedCar;
-                existingSedan.setBrand(source.getBrand());
-                existingSedan.setModel(source.getModel());
-                existingSedan.setYear(source.getYear());
-                existingSedan.setCarTypeId(source.getCarTypeId());
-                existingSedan.setPrice(source.getPrice());
-                existingSedan.setTrunkCapacity(source.getTrunkCapacity());
-                sedanRepository.save(existingSedan);
-                return ResponseEntity.ok("Sedan updated with ID: " + existingSedan.getId());
-            }).orElse(ResponseEntity.notFound().build());
-
-            case "TRUCK" -> truckRepository.findById(id).map(existing -> {
-                Truck existingTruck = existing;
-                Truck source = (Truck) updatedCar;
-                existingTruck.setBrand(source.getBrand());
-                existingTruck.setModel(source.getModel());
-                existingTruck.setYear(source.getYear());
-                existingTruck.setCarTypeId(source.getCarTypeId());
-                existingTruck.setPrice(source.getPrice());
-                existingTruck.setLoadCapacity(source.getLoadCapacity());
-                truckRepository.save(existingTruck);
-                return ResponseEntity.ok("Truck updated with ID: " + existingTruck.getId());
-            }).orElse(ResponseEntity.notFound().build());
-
-            case "MINIVAN" -> minivanRepository.findById(id).map(existing -> {
-                Minivan existingMinivan = existing;
-                Minivan source = (Minivan) updatedCar;
-                existingMinivan.setBrand(source.getBrand());
-                existingMinivan.setModel(source.getModel());
-                existingMinivan.setYear(source.getYear());
-                existingMinivan.setCarTypeId(source.getCarTypeId());
-                existingMinivan.setPrice(source.getPrice());
-                existingMinivan.setSeatingCapacity(source.getSeatingCapacity());
-                minivanRepository.save(existingMinivan);
-                return ResponseEntity.ok("Minivan updated with ID: " + existingMinivan.getId());
-            }).orElse(ResponseEntity.notFound().build());
-
-            default -> throw new IllegalArgumentException("Unknown car type: " + type);
-        };
-    }
-
+*/
+/*
     @Operation(summary = "Удалить автомобиль по ID", description = "Удаляет запись данного подтипа по идентификатору")
     @ApiResponse(responseCode = "200", description = "Автомобиль успешно удален")
     @ApiResponse(responseCode = "404", description = "Автомобиль не найден")
@@ -262,5 +157,5 @@ public class CarController {
             }
         };
         return ResponseEntity.notFound().build();
-    }
+    }*/
 }

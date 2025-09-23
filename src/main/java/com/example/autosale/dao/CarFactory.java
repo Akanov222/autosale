@@ -16,7 +16,50 @@ public class CarFactory {
         this.carTypeService = carTypeService;
     }
 
-    public Car createCar(String type, CarRequest request) {
+    public <T extends CarRequest> Car createCar(String type, T request) {
+        Car car = createCarInstance(type);
+        setCommonFields(request, car);
+        setSpecificFields(type, request, car);
+        return car;
+    }
+
+    // TODO CarRequest -> Map<String, Object>
+    private void setSpecificFields(String type, CarRequest request, Car car) {
+        switch (type.toUpperCase()) {
+            case "SEDAN" -> {
+                SedanRequest sedanRequest = (SedanRequest) request;
+                sedanRequest.setTrunkCapacity(((SedanRequest) request).getTrunkCapacity());
+            }
+            case "TRUCK" -> {
+                TruckRequest truckRequest = (TruckRequest) request;
+                truckRequest.setLoadCapacity(((TruckRequest) request).getLoadCapacity());
+            }
+            case "MINIVAN" -> {
+                MinivanRequest minivanRequest = (MinivanRequest) request;
+                minivanRequest.setSeatingCapacity(((MinivanRequest) request).getSeatingCapacity());
+            }
+        }
+    }
+
+    private Car createCarInstance(String type) {
+        return switch (type.toUpperCase()) {
+            case "SEDAN" -> new Sedan();
+            case "TRUCK" -> new Truck();
+            case "MINIVAN" -> new Minivan();
+            default -> throw new IllegalArgumentException("Unknown car type: " + type);
+        };
+    }
+
+    private void setCommonFields(CarRequest request, Car car) {
+        car.setBrand(request.getBrand());
+        car.setModel(request.getModel());
+        car.setYear(request.getYear());
+        car.setPrice(request.getPrice());
+    }
+}
+/*
+
+    public Car createCar2(String type, CarRequest request) {
         return switch (type.toUpperCase()) {
             case "SEDAN" -> {
                 SedanRequest sedanRequest = (SedanRequest) request;
@@ -45,11 +88,4 @@ public class CarFactory {
             default -> throw new IllegalStateException("Unexpected value: " + type.toUpperCase());
         };
     }
-
-    private void setCommonFields(CarRequest request, Car car) {
-        car.setBrand(request.getBrand());
-        car.setModel(request.getModel());
-        car.setYear(request.getYear());
-        car.setPrice(request.getPrice());
-    }
-}
+*/
