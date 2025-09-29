@@ -1,4 +1,4 @@
-package com.example.autosale.dao;
+package com.example.autosale.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,10 +12,9 @@ import java.math.BigDecimal;
 @Table(name = "minivan")
 public class Minivan extends Car {
 
-//    @Getter
-//    @Setter
-//    @JoinColumn(name = "car_type_id")
-//    private Long carTypeId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Getter
     @Setter
@@ -25,8 +24,6 @@ public class Minivan extends Car {
     public Minivan(String brand, String model, Integer year,
                    Long carTypeId, BigDecimal price, Double seatingCapacity) {
         super(brand, model, year, carTypeId, price);
-//        super(brand, model, year, price);
-//        this.carTypeId = carTypeId;
         this.seatingCapacity = seatingCapacity;
     }
 }

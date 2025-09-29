@@ -1,11 +1,10 @@
-package com.example.autosale.dao;
+package com.example.autosale.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,12 +14,11 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-@MappedSuperclass
 public abstract class Car {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @NotBlank(message = "Brand can not be blank!")
     private String brand;

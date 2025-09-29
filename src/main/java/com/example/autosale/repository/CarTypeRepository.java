@@ -1,6 +1,6 @@
 package com.example.autosale.repository;
 
-import com.example.autosale.dao.CarType;
+import com.example.autosale.model.CarType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

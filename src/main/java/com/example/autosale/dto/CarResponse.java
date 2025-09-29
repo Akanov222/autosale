@@ -1,6 +1,6 @@
 package com.example.autosale.dto;
 
-import com.example.autosale.dao.*;
+import com.example.autosale.model.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;

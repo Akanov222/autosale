@@ -1,26 +1,17 @@
 package com.example.autosale.service;
 
-import com.example.autosale.dao.Car;
-import com.example.autosale.dao.CarFactory;
-import com.example.autosale.dao.Sedan;
 import com.example.autosale.dto.CarRequest;
-import com.example.autosale.dto.MinivanRequest;
-import com.example.autosale.dto.SedanRequest;
-import com.example.autosale.dto.TruckRequest;
-import com.example.autosale.repository.GenericCarRepository;
-import com.example.autosale.repository.MinivanRepository;
-import com.example.autosale.repository.SedanRepository;
-import com.example.autosale.repository.TruckRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.type.descriptor.java.StringJavaType;
-import org.springframework.http.ResponseEntity;
+import com.example.autosale.model.Car;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
-public class CarService {
+public interface CarService {
 
+    void saveCar(Car car);
+    String getType();
+}
+
+    /*
     private final Map<String, GenericCarRepository<? extends Car>> repositories;
     private final CarFactory carFactory;
     private final ObjectMapper objectMapper;
@@ -68,4 +59,5 @@ public class CarService {
         GenericCarRepository<? extends Car> repository = getRepository(type);
         return repository.existsById(id);
     }
-}
+    */
+

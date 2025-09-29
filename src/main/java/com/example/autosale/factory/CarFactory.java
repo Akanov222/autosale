@@ -1,14 +1,15 @@
-package com.example.autosale.dao;
+package com.example.autosale.factory;
 
 import com.example.autosale.dto.CarRequest;
-import com.example.autosale.dto.MinivanRequest;
-import com.example.autosale.dto.SedanRequest;
-import com.example.autosale.dto.TruckRequest;
-import com.example.autosale.service.CarTypeService;
+import com.example.autosale.model.Car;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CarFactory {
+public interface CarFactory {
+
+    Car createCar(String type, CarRequest request);
+}
+/*
 
     private final CarTypeService carTypeService;
 
@@ -57,6 +58,10 @@ public class CarFactory {
         car.setPrice(request.getPrice());
     }
 }
+*/
+
+
+
 /*
 
     public Car createCar2(String type, CarRequest request) {

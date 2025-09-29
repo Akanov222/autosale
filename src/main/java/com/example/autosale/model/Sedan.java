@@ -1,4 +1,4 @@
-package com.example.autosale.dao;
+package com.example.autosale.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,9 +8,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@NoArgsConstructor
 @Table(name = "sedan")
+@NoArgsConstructor
 public class Sedan extends Car{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Getter
     @Setter

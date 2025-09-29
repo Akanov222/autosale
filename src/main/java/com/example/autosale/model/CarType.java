@@ -1,4 +1,4 @@
-package com.example.autosale.dao;
+package com.example.autosale.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -1,52 +1,47 @@
 package com.example.autosale.controller;
 
-import com.example.autosale.dao.*;
 import com.example.autosale.dto.*;
-import com.example.autosale.repository.MinivanRepository;
-import com.example.autosale.repository.SedanRepository;
-import com.example.autosale.repository.TruckRepository;
+import com.example.autosale.model.Car;
+import com.example.autosale.factory.CarFactory;
 import com.example.autosale.service.CarService;
-import com.example.autosale.service.CarTypeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cars")
 @Tag(name = "Car API", description = "Управление автомобилями в автосалоне")
 public class CarController {
 
-    private final SedanRepository sedanRepository;
-    private final TruckRepository truckRepository;
-    private final MinivanRepository minivanRepository;
-    private final CarTypeService carTypeService;
-    private final CarFactory carFactory;
-    private final CarService carService;
-    private final ObjectMapper objectMapper;
+    private final Map<String, CarService> services;
+    private final CarFactory factory;
 
     @Autowired
-    public CarController(SedanRepository sedanRepository,
-                         TruckRepository truckRepository,
-                         MinivanRepository minivanRepository,
-                         CarTypeService carTypeService,
-                         CarFactory carFactory, CarService carService,
-                         ObjectMapper objectMapper) {
-        this.sedanRepository = sedanRepository;
-        this.truckRepository = truckRepository;
-        this.minivanRepository = minivanRepository;
-        this.carTypeService = carTypeService;
-        this.carFactory = carFactory;
-        this.carService = carService;
-        this.objectMapper = objectMapper;
+    public CarController(List<CarService> services, CarFactory factory) {
+        this.factory = factory;
+        this.services = services.stream().collect(
+                Collectors.toMap(CarService::getType, s -> s));
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<CarResponse> createCar(@RequestParam String type, @RequestBody CarRequest request) {
+        CarService service = services.get(type.toLowerCase());
+        if (service == null) {
+            throw new IllegalArgumentException("Unknown car type");
+        }
+        Car car = factory.createCar(type, request);
+        service.saveCar(car);
+        return ResponseEntity.ok(CarResponse.fromCar(car));
+    }
+}
+
+/*
     @Operation(summary = "Получить все автомобили",
             description = "Возвращает автомобили всех типов")
     @ApiResponse(responseCode = "200", description = "Успешное получение списка")
@@ -103,6 +98,8 @@ public class CarController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+    */
+
 /*
 
     @Operation(summary = "Обновить автомобиль подтипа",
@@ -158,4 +155,3 @@ public class CarController {
         };
         return ResponseEntity.notFound().build();
     }*/
-}
