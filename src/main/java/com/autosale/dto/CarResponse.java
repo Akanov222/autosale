@@ -1,6 +1,6 @@
-package com.example.autosale.dto;
+package com.autosale.dto;
 
-import com.example.autosale.model.*;
+import com.autosale.model.entity.car.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -9,7 +9,7 @@ public record CarResponse(
         String brand,
         String model,
         Integer year,
-        String carType,
+        CarType carType,
         BigDecimal price,
 
         Optional<Double> trunkCapacity,
@@ -25,7 +25,7 @@ public record CarResponse(
                 car.getPrice(),
                 Optional.ofNullable(car instanceof Sedan ? ((Sedan) car).getTrunkCapacity() : null),
                 Optional.ofNullable(car instanceof Truck ? ((Truck) car).getLoadCapacity() : null),
-                Optional.ofNullable(car instanceof Minivan ? ((Minivan) car).getSeatingCapacity() : null)
+                Optional.ofNullable(car instanceof Sedan.Minivan ? ((Sedan.Minivan) car).getSeatingCapacity() : null)
         );
     }
 }

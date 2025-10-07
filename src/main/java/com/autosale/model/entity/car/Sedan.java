@@ -1,4 +1,4 @@
-package com.autosale.model;
+package com.autosale.model.entity.car;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,8 +22,29 @@ public class Sedan extends Car{
     private Double trunkCapacity;
 
     public Sedan(String brand, String model,
-                 Integer year, String carType, BigDecimal price, Double trunkCapacity) {
+                 Integer year, CarType carType, BigDecimal price, Double trunkCapacity) {
         super(brand, model, year, carType, price);
         this.trunkCapacity = trunkCapacity;
+    }
+
+    @Entity
+    @NoArgsConstructor
+    @Table(name = "minivan")
+    public static class Minivan extends Car {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @Getter
+        @Setter
+        @Column(name = "seating_capacity")
+        private Double seatingCapacity;
+
+        public Minivan(String brand, String model, Integer year,
+                       CarType carType, BigDecimal price, Double seatingCapacity) {
+            super(brand, model, year, carType, price);
+            this.seatingCapacity = seatingCapacity;
+        }
     }
 }

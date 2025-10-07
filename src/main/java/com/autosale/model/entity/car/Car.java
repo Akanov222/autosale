@@ -1,4 +1,4 @@
-package com.autosale.model;
+package com.autosale.model.entity.car;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -27,13 +27,13 @@ public abstract class Car {
 
     @Nullable
     @JoinColumn(name = "car_type")
-    public String carType;
+    public CarType carType;
 
     @PositiveOrZero(message = "Price must be positive or zero!")
     private BigDecimal price;
 
     public Car(String brand, String model, Integer year,
-               @Nullable String carType, BigDecimal price) {
+               @Nullable CarType carType, BigDecimal price) {
         this.brand = brand;
         this.model = model;
         this.year = year;

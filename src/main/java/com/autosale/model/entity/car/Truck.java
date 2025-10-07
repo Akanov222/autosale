@@ -1,4 +1,4 @@
-package com.autosale.model;
+package com.autosale.model.entity.car;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class Truck extends Car{
     private Double loadCapacity;
 
     public Truck(String brand, String model,
-                 Integer year, String carType, BigDecimal price, Double loadCapacity) {
+                 Integer year, CarType carType, BigDecimal price, Double loadCapacity) {
         super(brand, model, year, carType, price);
         this.loadCapacity = loadCapacity;
     }

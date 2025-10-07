@@ -1,4 +1,4 @@
-package com.example.autosale;
+package com.autosale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

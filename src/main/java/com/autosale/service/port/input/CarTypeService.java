@@ -1,6 +1,6 @@
-package com.autosale.service;
+package com.autosale.service.port.input;
 
-import com.autosale.model.CarType;
+import com.autosale.model.entity.car.CarType;
 import com.autosale.repository.car.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

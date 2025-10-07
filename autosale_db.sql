@@ -9,6 +9,7 @@ CREATE TABLE sedan (
                      model VARCHAR NOT NULL,
                      year BIGINT NOT NULL,
                      car_type_id BIGINT NOT NULL,
+                     car_type_name VARCHAR NOT NULL,
                      price NUMERIC(10, 2) NOT NULL,
                      trunk_capacity FLOAT
 );
@@ -19,6 +20,7 @@ CREATE TABLE minivan (
                        model VARCHAR NOT NULL,
                        year BIGINT NOT NULL,
                        car_type_id BIGINT NOT NULL,
+                       car_type_name VARCHAR NOT NULL,
                        price NUMERIC(10, 2) NOT NULL,
                        seating_capacity FLOAT
 );
@@ -29,6 +31,7 @@ CREATE TABLE truck (
                          model VARCHAR NOT NULL,
                          year BIGINT NOT NULL,
                          car_type_id BIGINT NOT NULL,
+                         car_type_name VARCHAR NOT NULL,
                          price NUMERIC(10, 2) NOT NULL,
                          load_capacity FLOAT
 );
@@ -43,13 +46,13 @@ INSERT INTO car_type VALUES (1, 'SEDAN');
 INSERT INTO car_type VALUES (2, 'TRUCK');
 INSERT INTO car_type VALUES (3, 'MINIVAN');
 
-INSERT INTO sedan VALUES (1,'Chevrolet', 'COLODADO', 2010, 1,
+INSERT INTO sedan VALUES (1,'Chevrolet', 'COLODADO', 2010, 1, 'SEDAN',
                           25000.0,456.0);
 
-INSERT INTO minivan VALUES (1,'Chevrolet', 'MINIVAN', 2010, 2,
+INSERT INTO minivan VALUES (1,'Chevrolet', 'MINIVAN', 2010, 3, 'MINIVAN',
                           35000.0,456.0);
 
-INSERT INTO truck VALUES (1,'Chevrolet', 'Tachoe', 2010, 3,
+INSERT INTO truck VALUES (1,'Chevrolet', 'Tachoe', 2010, 2, 'TRUCK',
                             35000.0,456.0);
 
 SELECT * FROM sedan;

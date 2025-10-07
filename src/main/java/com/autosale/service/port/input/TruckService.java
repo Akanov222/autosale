@@ -1,7 +1,7 @@
-package com.autosale.service;
+package com.autosale.service.port.input;
 
-import com.autosale.model.Car;
-import com.autosale.model.Truck;
+import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.car.TruckRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,11 @@ public class TruckService implements CarService{
 
     @Override
     public String getType() {
-        return "truck";
+        return "TRUCK";
+    }
+
+    @Override
+    public Long getTypeId() {
+        return 2L;
     }
 }

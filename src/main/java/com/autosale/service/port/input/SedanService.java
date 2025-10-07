@@ -1,7 +1,7 @@
-package com.autosale.service;
+package com.autosale.service.port.input;
 
-import com.autosale.model.Car;
-import com.autosale.model.Sedan;
+import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.car.SedanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,11 @@ public class SedanService implements CarService {
 
     @Override
     public String getType() {
-        return "sedan";
+        return "SEDAN";
+    }
+
+    @Override
+    public Long getTypeId() {
+        return 1L;
     }
 }
