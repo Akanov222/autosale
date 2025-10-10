@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class Car {
 
     @NotBlank(message = "Brand can not be blank!")
@@ -25,15 +26,15 @@ public abstract class Car {
     @NotNull(message = "Year can not ba blank!")
     private Integer year;
 
-    @Nullable
-    @JoinColumn(name = "car_type")
-    public CarType carType;
+    @ManyToOne(fetch = FetchType.LAZY)  // Указываем связь с CarType
+    @JoinColumn(name = "car_type_id", referencedColumnName = "id", nullable = false)
+    private CarType carType;
 
     @PositiveOrZero(message = "Price must be positive or zero!")
     private BigDecimal price;
 
     public Car(String brand, String model, Integer year,
-               @Nullable CarType carType, BigDecimal price) {
+               CarType carType, BigDecimal price) {
         this.brand = brand;
         this.model = model;
         this.year = year;

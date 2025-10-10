@@ -5,8 +5,8 @@ import com.autosale.model.entity.car.Car;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface CarFactory {
+public interface CarFactory<T extends CarRequestDTO> {
 
     String getType();
-    Car createCar(String type, CarRequestDTO request);
+    Car createCar(String type, T dto);
 }

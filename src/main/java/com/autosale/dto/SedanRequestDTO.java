@@ -24,6 +24,6 @@ public class SedanRequestDTO extends CarRequestDTO {
 
     @Override
     public String getCarTypeName() {
-        return "sedan";
+        return "SEDAN";
     }
 }

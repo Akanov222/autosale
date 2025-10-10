@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,5 +27,36 @@ public abstract class CarRequestDTO {
 
     public abstract String getCarTypeName();
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }
 

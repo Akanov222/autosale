@@ -1,6 +1,7 @@
 package com.autosale.service.port.input;
 
 import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.Minivan;
 import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.car.MinivanRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class MinivanService implements CarService {
 
     @Override
     public void saveCar(Car car) {
-        repository.save((Sedan.Minivan) car);
+        Minivan minivan = (Minivan) car;
+        repository.save(minivan);
     }
 
     @Override
@@ -26,6 +28,6 @@ public class MinivanService implements CarService {
 
     @Override
     public Long getTypeId() {
-        return 0L;
+        return 3L;
     }
 }

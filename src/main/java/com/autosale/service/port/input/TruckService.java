@@ -16,7 +16,8 @@ public class TruckService implements CarService{
 
     @Override
     public void saveCar(Car car) {
-        repository.save((Truck) car);
+        Truck truck = (Truck) car;
+        repository.save(truck);
     }
 
     @Override

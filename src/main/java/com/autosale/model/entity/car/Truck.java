@@ -21,6 +21,11 @@ public class Truck extends Car{
     @Column(name = "load_capacity")
     private Double loadCapacity;
 
+    @Getter
+    @Setter
+    @Column(name = "car_type_name", nullable = false)
+    private String carTypeName;
+
     public Truck(String brand, String model,
                  Integer year, CarType carType, BigDecimal price, Double loadCapacity) {
         super(brand, model, year, carType, price);

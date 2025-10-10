@@ -8,9 +8,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "sedan")
+@Table(name = "minivan")
 @NoArgsConstructor
-public class Sedan extends Car{
+public class Minivan extends Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +18,17 @@ public class Sedan extends Car{
 
     @Getter
     @Setter
-    @Column(name = "trunk_capacity")
-    private Double trunkCapacity;
+    @Column(name = "seating_capacity")
+    private Double seatingCapacity;
 
     @Getter
     @Setter
     @Column(name = "car_type_name", nullable = false)
     private String carTypeName;
 
-    public Sedan(String brand, String model,
-                 Integer year, CarType carType, BigDecimal price, Double trunkCapacity) {
+    public Minivan(String brand, String model,
+                   Integer year, CarType carType, BigDecimal price, Double seatingCapacity) {
         super(brand, model, year, carType, price);
-        this.trunkCapacity = trunkCapacity;
+        this.seatingCapacity = seatingCapacity;
     }
 }

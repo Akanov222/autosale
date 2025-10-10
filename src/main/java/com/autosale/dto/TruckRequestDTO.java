@@ -25,6 +25,6 @@ public class TruckRequestDTO extends CarRequestDTO {
 
     @Override
     public String getCarTypeName() {
-        return "truck";
+        return "TRUCK";
     }
 }

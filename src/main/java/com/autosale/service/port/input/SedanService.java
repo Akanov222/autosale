@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SedanService implements CarService {
+public class SedanService implements CarService<Sedan> {
 
     public final SedanRepository sedanRepository;
 
@@ -17,11 +17,15 @@ public class SedanService implements CarService {
     }
 
     @Override
-    public void saveCar(Car car) {
-        if (!(car instanceof Sedan)) {
-            throw new IllegalArgumentException("Car must be a Sedan");
-        }
-        sedanRepository.save((Sedan) car);
+    public void saveCar(Sedan sedan) {
+        System.out.println("SedanService " + sedan.getModel());
+        System.out.println("SedanService " + sedan.getBrand());
+        System.out.println("SedanService " + sedan.getYear());
+        System.out.println("SedanService " + sedan.getPrice());
+        System.out.println("SedanService " + sedan.getCarType().getId());
+        System.out.println("SedanService " + sedan.getCarType().getName());
+        System.out.println("SedanService " + sedan.getTrunkCapacity());
+        sedanRepository.save(sedan);
     }
 
     @Override

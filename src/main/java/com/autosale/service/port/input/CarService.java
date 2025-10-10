@@ -4,9 +4,9 @@ import com.autosale.model.entity.car.Car;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface CarService {
+public interface CarService<T extends Car> {
 
-    void saveCar(Car car);
+    void saveCar(T car);
     String getType();
     Long getTypeId();
 }
