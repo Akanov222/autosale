@@ -4,7 +4,9 @@ import com.autosale.dto.CarRequestDTO;
 import com.autosale.dto.MinivanRequestDTO;
 import com.autosale.dto.SedanRequestDTO;
 import com.autosale.dto.TruckRequestDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CarRequestFactory {
 
     public static CarRequestDTO createRequest(String carType) {

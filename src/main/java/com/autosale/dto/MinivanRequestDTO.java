@@ -1,7 +1,6 @@
 package com.autosale.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class MinivanRequestDTO extends CarRequestDTO {
 
-//    @NotNull(message = "Seating capacity is required")
-//    @PositiveOrZero(message = "Seating capacity must be positive")
+    @JsonProperty("seatingCapacity")
     private Double seatingCapacity;
 
     public MinivanRequestDTO(String brand, String model, Integer year,
@@ -22,5 +20,10 @@ public class MinivanRequestDTO extends CarRequestDTO {
                              Double seatingCapacity) {
         super(brand, model, year, carTypeName, price);
         this.seatingCapacity = seatingCapacity;
+    }
+
+    @Override
+    public String getCarTypeName() {
+        return "minivan";
     }
 }
