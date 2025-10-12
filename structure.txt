@@ -1,0 +1,389 @@
+car-service/
+├── .github/
+│   └── workflows/
+│       ├── ci-cd.yml
+│       ├── security-scan.yml
+│       └── performance-test.yml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── carservice/
+│   │   │           ├── CarServiceApplication.java
+│   │   │           ├── config/
+│   │   │           │   ├── KafkaConfig.java
+│   │   │           │   ├── OpenApiConfig.java
+│   │   │           │   ├── SecurityConfig.java
+│   │   │           │   ├── WebConfig.java
+│   │   │           │   ├── AsyncConfig.java
+│   │   │           │   ├── MetricsConfig.java
+│   │   │           │   ├── CacheConfig.java
+│   │   │           │   ├── RedisConfig.java
+│   │   │           │   ├── RetryConfig.java
+│   │   │           │   ├── CircuitBreakerConfig.java
+│   │   │           │   └── SchedulerConfig.java
+│   │   │           ├── domain/
+│   │   │           │   ├── model/
+│   │   │           │   │   ├── enums/
+│   │   │           │   │   │   ├── CarStatus.java
+│   │   │           │   │   │   ├── OrderStatus.java
+│   │   │           │   │   │   ├── UserRole.java
+│   │   │           │   │   │   ├── PaymentStatus.java
+│   │   │           │   │   │   └── TokenType.java
+│   │   │           │   │   ├── entity/
+│   │   │           │   │   │   ├── user/
+│   │   │           │   │   │   │   ├── User.java
+│   │   │           │   │   │   │   ├── Seller.java
+│   │   │           │   │   │   │   ├── Buyer.java
+│   │   │           │   │   │   │   ├── Admin.java
+│   │   │           │   │   │   │   └── RefreshToken.java
+│   │   │           │   │   │   ├── car/
+│   │   │           │   │   │   │   ├── Car.java
+│   │   │           │   │   │   │   ├── Sedan.java
+│   │   │           │   │   │   │   ├── Truck.java
+│   │   │           │   │   │   │   ├── Minivan.java
+│   │   │           │   │   │   │   └── CarType.java
+│   │   │           │   │   │   ├── sale/
+│   │   │           │   │   │   │   ├── SaleOrder.java
+│   │   │           │   │   │   │   ├── OrderItem.java
+│   │   │           │   │   │   │   └── Payment.java
+│   │   │           │   │   │   └── audit/
+│   │   │           │   │   │       └── AuditLog.java
+│   │   │           │   │   └── valueobject/
+│   │   │           │   │       ├── Address.java
+│   │   │           │   │       ├── Money.java
+│   │   │           │   │       ├── VIN.java
+│   │   │           │   │       └── JwtToken.java
+│   │   │           │   ├── repository/
+│   │   │           │   │   ├── user/
+│   │   │           │   │   │   ├── UserRepository.java
+│   │   │           │   │   │   ├── SellerRepository.java
+│   │   │           │   │   │   ├── BuyerRepository.java
+│   │   │           │   │   │   ├── AdminRepository.java
+│   │   │           │   │   │   └── RefreshTokenRepository.java
+│   │   │           │   │   ├── car/
+│   │   │           │   │   │   ├── CarRepository.java
+│   │   │           │   │   │   ├── SedanRepository.java
+│   │   │           │   │   │   ├── TruckRepository.java
+│   │   │           │   │   │   ├── MinivanRepository.java
+│   │   │           │   │   │   └── CarTypeRepository.java
+│   │   │           │   │   └── sale/
+│   │   │           │   │       ├── SaleOrderRepository.java
+│   │   │           │   │       ├── OrderItemRepository.java
+│   │   │           │   │       └── PaymentRepository.java
+│   │   │           │   └── exception/
+│   │   │           │       ├── BusinessException.java
+│   │   │           │       ├── CarNotFoundException.java
+│   │   │           │       ├── UserNotFoundException.java
+│   │   │           │       ├── OrderNotFoundException.java
+│   │   │           │       ├── InsufficientFundsException.java
+│   │   │           │       ├── JwtAuthenticationException.java
+│   │   │           │       └── AccessDeniedException.java
+│   │   │           ├── service/
+│   │   │           │   ├── port/
+│   │   │           │   │   ├── input/
+│   │   │           │   │   │   ├── CarService.java
+│   │   │           │   │   │   ├── UserService.java
+│   │   │           │   │   │   ├── SaleService.java
+│   │   │           │   │   │   ├── PaymentService.java
+│   │   │           │   │   │   ├── NotificationService.java
+│   │   │           │   │   │   ├── AuthService.java
+│   │   │           │   │   │   └── MetricsService.java
+│   │   │           │   │   └── output/
+│   │   │           │   │       ├── persistence/
+│   │   │           │   │       │   ├── CarPersistencePort.java
+│   │   │           │   │       │   ├── UserPersistencePort.java
+│   │   │           │   │       │   ├── SalePersistencePort.java
+│   │   │           │   │       │   └── PaymentPersistencePort.java
+│   │   │           │   │       ├── messaging/
+│   │   │           │   │       │   ├── EventPublisherPort.java
+│   │   │           │   │       │   └── NotificationPort.java
+│   │   │           │   │       ├── external/
+│   │   │           │   │       │   ├── PaymentGatewayPort.java
+│   │   │           │   │       │   └── DeliveryServicePort.java
+│   │   │           │   │       └── security/
+│   │   │           │   │           ├── TokenProviderPort.java
+│   │   │           │   │           └── PasswordEncoderPort.java
+│   │   │           │   ├── impl/
+│   │   │           │   │   ├── CarServiceImpl.java
+│   │   │           │   │   ├── UserServiceImpl.java
+│   │   │           │   │   ├── SaleServiceImpl.java
+│   │   │           │   │   ├── PaymentServiceImpl.java
+│   │   │           │   │   ├── NotificationServiceImpl.java
+│   │   │           │   │   ├── AuthServiceImpl.java
+│   │   │           │   │   ├── MetricsServiceImpl.java
+│   │   │           │   │   └── AuditServiceImpl.java
+│   │   │           │   ├── factory/
+│   │   │           │   │   ├── CarFactory.java
+│   │   │           │   │   ├── UserFactory.java
+│   │   │           │   │   ├── SaleOrderFactory.java
+│   │   │           │   │   └── JwtTokenFactory.java
+│   │   │           │   ├── strategy/
+│   │   │           │   │   ├── pricing/
+│   │   │           │   │   │   ├── PricingStrategy.java
+│   │   │           │   │   │   ├── StandardPricingStrategy.java
+│   │   │           │   │   │   ├── PremiumPricingStrategy.java
+│   │   │           │   │   │   └── DiscountPricingStrategy.java
+│   │   │           │   │   ├── payment/
+│   │   │           │   │   │   ├── PaymentStrategy.java
+│   │   │           │   │   │   ├── CreditCardPaymentStrategy.java
+│   │   │           │   │   │   ├── BankTransferPaymentStrategy.java
+│   │   │           │   │   │   └── CashPaymentStrategy.java
+│   │   │           │   │   └── delivery/
+│   │   │           │   │       ├── DeliveryStrategy.java
+│   │   │           │   │       ├── StandardDeliveryStrategy.java
+│   │   │           │   │       └── ExpressDeliveryStrategy.java
+│   │   │           │   └── validator/
+│   │   │           │       ├── CarValidator.java
+│   │   │           │       ├── OrderValidator.java
+│   │   │           │       ├── PaymentValidator.java
+│   │   │           │       └── AuthValidator.java
+│   │   │           ├── adapter/
+│   │   │           │   ├── input/
+│   │   │           │   │   ├── web/
+│   │   │           │   │   │   ├── rest/
+│   │   │           │   │   │   │   ├── controller/
+│   │   │           │   │   │   │   │   ├── CarController.java
+│   │   │           │   │   │   │   │   ├── UserController.java
+│   │   │           │   │   │   │   │   ├── SaleController.java
+│   │   │           │   │   │   │   │   ├── PaymentController.java
+│   │   │           │   │   │   │   │   ├── AdminController.java
+│   │   │           │   │   │   │   │   ├── AuthController.java
+│   │   │           │   │   │   │   │   └── MetricsController.java
+│   │   │           │   │   │   │   ├── dto/
+│   │   │           │   │   │   │   │   ├── request/
+│   │   │           │   │   │   │   │   │   ├── CreateCarRequest.java
+│   │   │           │   │   │   │   │   │   ├── CreateUserRequest.java
+│   │   │           │   │   │   │   │   │   ├── CreateOrderRequest.java
+│   │   │           │   │   │   │   │   │   ├── PaymentRequest.java
+│   │   │           │   │   │   │   │   │   ├── LoginRequest.java
+│   │   │           │   │   │   │   │   │   ├── RegisterRequest.java
+│   │   │           │   │   │   │   │   │   └── RefreshTokenRequest.java
+│   │   │           │   │   │   │   │   ├── response/
+│   │   │           │   │   │   │   │   │   ├── CarResponse.java
+│   │   │           │   │   │   │   │   │   ├── UserResponse.java
+│   │   │           │   │   │   │   │   │   ├── OrderResponse.java
+│   │   │           │   │   │   │   │   │   ├── AuthResponse.java
+│   │   │           │   │   │   │   │   │   ├── ApiResponse.java
+│   │   │           │   │   │   │   │   │   └── MetricsResponse.java
+│   │   │           │   │   │   │   │   └── mapper/
+│   │   │           │   │   │   │   │       ├── CarMapper.java
+│   │   │           │   │   │   │   │       ├── UserMapper.java
+│   │   │           │   │   │   │   │       ├── OrderMapper.java
+│   │   │           │   │   │   │   │       ├── PaymentMapper.java
+│   │   │           │   │   │   │   │       └── AuthMapper.java
+│   │   │           │   │   │   │   ├── advice/
+│   │   │           │   │   │   │   │   ├── GlobalExceptionHandler.java
+│   │   │           │   │   │   │   │   ├── ValidationHandler.java
+│   │   │           │   │   │   │   │   └── SecurityExceptionHandler.java
+│   │   │           │   │   │   │   └── filter/
+│   │   │           │   │   │   │       ├── JwtAuthenticationFilter.java
+│   │   │           │   │   │   │       ├── LoggingFilter.java
+│   │   │           │   │   │   │       └── RateLimitFilter.java
+│   │   │           │   │   │   └── graphql/
+│   │   │           │   │   │       ├── CarGraphQLController.java
+│   │   │           │   │   │       └── OrderGraphQLController.java
+│   │   │           │   │   └── event/
+│   │   │           │   │       ├── consumer/
+│   │   │           │   │       │   ├── DeliveryEventConsumer.java
+│   │   │           │   │       │   ├── PaymentEventConsumer.java
+│   │   │           │   │       │   └── InventoryEventConsumer.java
+│   │   │           │   │       └── processor/
+│   │   │           │   │           ├── OrderEventProcessor.java
+│   │   │           │   │           └── PaymentEventProcessor.java
+│   │   │           │   └── output/
+│   │   │           │       ├── persistence/
+│   │   │           │       │   ├── repository/
+│   │   │           │       │   │   ├── user/
+│   │   │           │       │   │   │   ├── UserRepositoryAdapter.java
+│   │   │           │       │   │   │   ├── SellerRepositoryAdapter.java
+│   │   │           │       │   │   │   └── BuyerRepositoryAdapter.java
+│   │   │           │       │   │   ├── car/
+│   │   │           │       │   │   │   ├── CarRepositoryAdapter.java
+│   │   │           │       │   │   │   ├── SedanRepositoryAdapter.java
+│   │   │           │       │   │   │   └── TruckRepositoryAdapter.java
+│   │   │           │       │   │   └── sale/
+│   │   │           │       │   │       ├── SaleOrderRepositoryAdapter.java
+│   │   │           │       │   │       └── PaymentRepositoryAdapter.java
+│   │   │           │       │   └── entity/
+│   │   │           │       │       ├── UserEntity.java
+│   │   │           │       │       ├── CarEntity.java
+│   │   │           │       │       ├── OrderEntity.java
+│   │   │           │       │       └── PaymentEntity.java
+│   │   │           │       ├── messaging/
+│   │   │           │       │   ├── producer/
+│   │   │           │       │   │   ├── KafkaEventPublisher.java
+│   │   │           │       │   │   ├── CarEventProducer.java
+│   │   │           │       │   │   ├── OrderEventProducer.java
+│   │   │           │       │   │   └── NotificationProducer.java
+│   │   │           │       │   └── dto/
+│   │   │           │       │       ├── CarEvent.java
+│   │   │           │       │       ├── OrderEvent.java
+│   │   │           │       │       ├── PaymentEvent.java
+│   │   │           │       │       └── NotificationEvent.java
+│   │   │           │       ├── external/
+│   │   │           │       │   ├── payment/
+│   │   │           │       │   │   ├── StripePaymentAdapter.java
+│   │   │           │       │   │   └── BankPaymentAdapter.java
+│   │   │           │       │   └── delivery/
+│   │   │           │       │       ├── FedexDeliveryAdapter.java
+│   │   │           │       │       └── DhlDeliveryAdapter.java
+│   │   │           │       └── security/
+│   │   │           │           ├── JwtTokenProvider.java
+│   │   │           │           ├── BCryptPasswordEncoder.java
+│   │   │           │           └── SecurityContextAdapter.java
+│   │   │           ├── aspect/
+│   │   │           │   ├── LoggingAspect.java
+│   │   │           │   ├── MonitoringAspect.java
+│   │   │           │   ├── SecurityAspect.java
+│   │   │           │   ├── PerformanceAspect.java
+│   │   │           │   ├── MetricsAspect.java
+│   │   │           │   └── CircuitBreakerAspect.java
+│   │   │           ├── security/
+│   │   │           │   ├── JwtUtils.java
+│   │   │           │   ├── SecurityUtils.java
+│   │   │           │   ├── UserPrincipal.java
+│   │   │           │   └── RateLimiter.java
+│   │   │           ├── monitoring/
+│   │   │           │   ├── metrics/
+│   │   │           │   │   ├── CustomMetrics.java
+│   │   │           │   │   ├── BusinessMetrics.java
+│   │   │           │   │   └── SystemMetrics.java
+│   │   │           │   ├── health/
+│   │   │           │   │   ├── DatabaseHealthIndicator.java
+│   │   │           │   │   ├── KafkaHealthIndicator.java
+│   │   │           │   │   └── CustomHealthIndicator.java
+│   │   │           │   └── tracing/
+│   │   │           │       ├── RequestTracing.java
+│   │   │           │       └── DistributedTracing.java
+│   │   │           └── util/
+│   │   │               ├── DateUtils.java
+│   │   │               ├── MoneyUtils.java
+│   │   │               ├── ValidationUtils.java
+│   │   │               └── JsonUtils.java
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
+│   │       ├── application-test.yml
+│   │       ├── db/
+│   │       │   ├── migration/
+│   │       │   │   ├── V1__Initial_schema.sql
+│   │       │   │   ├── V2__Add_auth_tables.sql
+│   │       │   │   └── V3__Add_audit_tables.sql
+│   │       │   └── data.sql
+│   │       ├── graphql/
+│   │       │   └── schema.graphqls
+│   │       ├── openapi/
+│   │       │   ├── openapi.yaml
+│   │       │   └── car-service-api.json
+│   │       ├── grafana/
+│   │       │   ├── dashboard.yml
+│   │       │   ├── car-service-dashboard.json
+│   │       │   └── business-metrics-dashboard.json
+│   │       ├── prometheus/
+│   │       │   └── prometheus.yml
+│   │       ├── i18n/
+│   │       │   ├── messages.properties
+│   │       │   ├── messages_ru.properties
+│   │       │   └── messages_en.properties
+│   │       ├── certificates/
+│   │       │   ├── keystore.p12
+│   │       │   └── truststore.jks
+│   │       └── logback-spring.xml
+│   └── test/
+│       ├── java/
+│       │   └── com/
+│       │       └── carservice/
+│       │           ├── unit/
+│       │           │   ├── service/
+│       │           │   ├── domain/
+│       │           │   ├── adapter/
+│       │           │   └── security/
+│       │           ├── integration/
+│       │           │   ├── ControllerIntegrationTest.java
+│       │           │   ├── ServiceIntegrationTest.java
+│       │           │   ├── SecurityIntegrationTest.java
+│       │           │   └── KafkaIntegrationTest.java
+│       │           ├── component/
+│       │           │   ├── CarServiceComponentTest.java
+│       │           │   └── OrderServiceComponentTest.java
+│       │           └── performance/
+│       │               ├── LoadTest.java
+│       │               └── StressTest.java
+│       └── resources/
+│           ├── application-test.yml
+│           ├── test-data.sql
+│           └── wiremock/
+│               └── mappings/
+├── docker/
+│   ├── docker-compose.yml
+│   ├── docker-compose-kafka.yml
+│   ├── docker-compose-monitoring.yml
+│   ├── docker-compose-security.yml
+│   ├── prometheus/
+│   │   ├── prometheus.yml
+│   │   └── alerts.yml
+│   ├── grafana/
+│   │   ├── provisioning/
+│   │   │   ├── dashboards/
+│   │   │   └── datasources/
+│   │   └── dashboards/
+│   ├── elk/
+│   │   └── logstash.conf
+│   └── nginx/
+│       └── nginx.conf
+├── k8s/
+│   ├── base/
+│   │   ├── deployment.yml
+│   │   ├── service.yml
+│   │   ├── configmap.yml
+│   │   ├── secret.yml
+│   │   ├── ingress.yml
+│   │   ├── hpa.yml
+│   │   └── pdb.yml
+│   ├── overlays/
+│   │   ├── production/
+│   │   │   ├── kustomization.yml
+│   │   │   └── ingress-production.yml
+│   │   └── staging/
+│   │       ├── kustomization.yml
+│   │       └── ingress-staging.yml
+│   └── monitoring/
+│       ├── service-monitor.yml
+│       ├── grafana-dashboard.yml
+│       └── alertmanager.yml
+├── docs/
+│   ├── api/
+│   │   ├── openapi.yaml
+│   │   └── postman-collection.json
+│   ├── architecture/
+│   │   ├── system-architecture.md
+│   │   ├── database-schema.md
+│   │   └── deployment-guide.md
+│   ├── security/
+│   │   ├── auth-flow.md
+│   │   └── security-policy.md
+│   └── monitoring/
+│       ├── metrics-guide.md
+│       └── alerting-rules.md
+├── scripts/
+│   ├── deploy.sh
+│   ├── migrate.sh
+│   ├── backup.sh
+│   ├── monitoring-setup.sh
+│   └── ssl-setup.sh
+├── helm/
+│   └── car-service/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+├── .env.example
+├── .gitignore
+├── .dockerignore
+├── Dockerfile
+├── docker-compose.override.yml
+├── pom.xml
+├── mvnw
+├── Makefile
+└── README.md

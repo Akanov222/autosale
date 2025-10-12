@@ -87,7 +87,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: car_type_id
-                  type: integer
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_name
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -140,7 +145,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: car_type_id
-                  type: integer
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_name
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -168,14 +178,14 @@ databaseChangeLog:
                 tableName: car
         - sql:
             sql: |
-              INSERT INTO sedan (brand, model, year, car_type_id, price, trunk_capacity)
-              SELECT brand, model, year, car_type_id, price, trunk_capacity FROM car WHERE trunk_capacity IS NOT NULL;
+              INSERT INTO sedan (brand, model, year, car_type_id, car_type_name, price, trunk_capacity)
+              SELECT brand, model, year, car_type_id, car_type_name, price, trunk_capacity FROM car WHERE trunk_capacity IS NOT NULL;
 
-              INSERT INTO truck (brand, model, year, car_type_id, price, load_capacity)
-              SELECT brand, model, year, car_type_id, price, load_capacity FROM car WHERE load_capacity IS NOT NULL;
+              INSERT INTO truck (brand, model, year, car_type_id, car_type_name, price, load_capacity)
+              SELECT brand, model, year, car_type_id, price, car_type_name, load_capacity FROM car WHERE load_capacity IS NOT NULL;
 
-              INSERT INTO minivan (brand, model, year, car_type_id, price, seating_capacity)
-              SELECT brand, model, year, car_type_id, price, seating_capacity FROM car WHERE seating_capacity IS NOT NULL;
+              INSERT INTO minivan (brand, model, year, car_type_id, car_type_name, price, seating_capacity)
+              SELECT brand, model, year, car_type_id, car_type_name, price, seating_capacity FROM car WHERE seating_capacity IS NOT NULL;
 
   - changeSet:
       id: v2-5-drop-old-car

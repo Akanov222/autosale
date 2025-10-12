@@ -86,6 +86,9 @@ databaseChangeLog:
               - column:
                   name: car_type_id
                   type: bigint
+              - column:
+                  name: car_type_name
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
