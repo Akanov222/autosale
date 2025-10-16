@@ -21,11 +21,6 @@ public class Minivan extends Car {
     @Column(name = "seating_capacity")
     private Double seatingCapacity;
 
-    @Getter
-    @Setter
-    @Column(name = "car_type_name", nullable = false)
-    private String carTypeName;
-
     public Minivan(String brand, String model,
                    Integer year, CarType carType, BigDecimal price, Double seatingCapacity) {
         super(brand, model, year, carType, price);

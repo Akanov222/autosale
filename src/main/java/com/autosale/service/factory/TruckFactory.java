@@ -9,6 +9,8 @@ import com.autosale.repository.car.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.autosale.model.entity.car.CarTypeEnum.TRUCK;
+
 @Component
 public class TruckFactory implements CarFactory {
 
@@ -21,16 +23,16 @@ public class TruckFactory implements CarFactory {
 
     @Override
     public String getType() {
-        return "TRUCK";
+        return TRUCK.getCode();
     }
 
     @Override
     public Car createCar(String type, CarRequestDTO request) {
-        if (!"TRUCK".equalsIgnoreCase(type)) {
+        if (!TRUCK.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("TruckFactory can only create trucks");
         }
 
-        CarType carType = repository.findByName("TRUCK")
+        CarType carType = repository.findByName(TRUCK.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Truck truck = new Truck();
@@ -38,7 +40,6 @@ public class TruckFactory implements CarFactory {
         truck.setModel(request.getModel());
         truck.setYear(request.getYear());
         truck.setCarType(carType);
-        truck.setCarTypeName(carType.getName());
         truck.setPrice(request.getPrice());
         truck.setLoadCapacity(((TruckRequestDTO) request).getLoadCapacity());
         return truck;

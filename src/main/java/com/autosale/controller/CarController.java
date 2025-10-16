@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.autosale.model.entity.car.CarTypeEnum.*;
+
 @RestController
 @RequestMapping("/api/cars")
 @Tag(name = "Car API", description = "Управление автомобилями в автосалоне")
@@ -36,7 +38,7 @@ public class CarController {
         Car specificCar = null;
         CarFactory factory = factories.get(type.toUpperCase());
         CarService service = services.get(type.toUpperCase());
-
+        System.out.println("point_1");
         if ("SEDAN".equalsIgnoreCase(type)) {
             specificRequestDTO = (SedanRequestDTO) requestDTO;
             specificCar = new Sedan();
@@ -47,10 +49,13 @@ public class CarController {
             specificRequestDTO = (TruckRequestDTO) requestDTO;
             specificCar = new Truck();
         }
-
+        System.out.println("point_2");
         try {
+            System.out.println("point_3");
             specificCar = factory.createCar(type, specificRequestDTO);
+            System.out.println("point_4");
             service.saveCar(specificCar);
+            System.out.println("point_5");
             return ResponseEntity.ok(CarResponse.fromCar(specificCar));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());

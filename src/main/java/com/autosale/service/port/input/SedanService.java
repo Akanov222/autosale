@@ -6,10 +6,12 @@ import com.autosale.repository.car.SedanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.autosale.model.entity.car.CarTypeEnum.SEDAN;
+
 @Service
 public class SedanService implements CarService<Sedan> {
 
-    public final SedanRepository sedanRepository;
+    private final SedanRepository sedanRepository;
 
     @Autowired
     public SedanService(SedanRepository sedanRepository) {

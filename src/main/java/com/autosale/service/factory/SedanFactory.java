@@ -9,6 +9,8 @@ import com.autosale.repository.car.CarTypeRepository;
 import com.autosale.repository.car.SedanRepository;
 import org.springframework.stereotype.Component;
 
+import static com.autosale.model.entity.car.CarTypeEnum.SEDAN;
+
 @Component
 public class SedanFactory implements CarFactory<SedanRequestDTO> {
 
@@ -26,9 +28,10 @@ public class SedanFactory implements CarFactory<SedanRequestDTO> {
     @Override
     public Car createCar(String type, SedanRequestDTO sedanRequestDTO) {
         if (!"SEDAN".equalsIgnoreCase(type)) {
+            System.out.println("SEDAN not equels");
             throw new IllegalArgumentException("SedanFactory can only create sedans");
         }
-
+        System.out.println("SEDAN is equels");
         CarType carType = repository.findByName("SEDAN")
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
@@ -37,7 +40,6 @@ public class SedanFactory implements CarFactory<SedanRequestDTO> {
         sedan.setModel(sedanRequestDTO.getModel());
         sedan.setYear(sedanRequestDTO.getYear());
         sedan.setCarType(carType);
-        sedan.setCarTypeName(carType.getName());
         sedan.setPrice(sedanRequestDTO.getPrice());
         sedan.setTrunkCapacity(sedanRequestDTO.getTrunkCapacity());
         System.out.println("SedanFactory " + sedanRequestDTO.getModel());

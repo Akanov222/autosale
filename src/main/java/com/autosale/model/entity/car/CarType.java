@@ -19,6 +19,8 @@ public class CarType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+//    @NotBlank
+//    @Enumerated(EnumType.STRING)
+    @Column(name = "name")
     private String name;
 }

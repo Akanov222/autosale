@@ -9,6 +9,8 @@ import com.autosale.repository.car.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.autosale.model.entity.car.CarTypeEnum.MINIVAN;
+
 @Component
 public class MinivanFactory implements CarFactory {
 
@@ -21,7 +23,7 @@ public class MinivanFactory implements CarFactory {
 
     @Override
     public String getType() {
-        return "MINIVAN";
+        return MINIVAN.name();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class MinivanFactory implements CarFactory {
             throw new IllegalArgumentException("MinivanFactory can only create minivans");
         }
 
-        CarType carType = repository.findByName("MINIVAN")
+        CarType carType = repository.findByName(MINIVAN.name())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Minivan minivan = new Minivan();
@@ -38,7 +40,6 @@ public class MinivanFactory implements CarFactory {
         minivan.setModel(request.getModel());
         minivan.setYear(request.getYear());
         minivan.setCarType(carType);
-        minivan.setCarTypeName(carType.getName());
         minivan.setPrice(request.getPrice());
         minivan.setSeatingCapacity(((MinivanRequestDTO) request).getSeatingCapacity());
         return minivan;
