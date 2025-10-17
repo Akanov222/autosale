@@ -39,7 +39,7 @@ public class CarController {
         CarFactory factory = factories.get(type.toUpperCase());
         CarService service = services.get(type.toUpperCase());
         System.out.println("point_1");
-        if ("SEDAN".equalsIgnoreCase(type)) {
+        if (SEDAN.getCode().toString().equalsIgnoreCase(type)) {
             specificRequestDTO = (SedanRequestDTO) requestDTO;
             specificCar = new Sedan();
         } else if ("MINIVAN".equalsIgnoreCase(type)) {

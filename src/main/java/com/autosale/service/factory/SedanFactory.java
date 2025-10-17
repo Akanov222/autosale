@@ -22,17 +22,17 @@ public class SedanFactory implements CarFactory<SedanRequestDTO> {
 
     @Override
     public String getType() {
-        return "SEDAN";
+        return SEDAN.getCode().toString();
     }
 
     @Override
     public Car createCar(String type, SedanRequestDTO sedanRequestDTO) {
-        if (!"SEDAN".equalsIgnoreCase(type)) {
+        if (!SEDAN.getCode().toString().equalsIgnoreCase(type)) {
             System.out.println("SEDAN not equels");
             throw new IllegalArgumentException("SedanFactory can only create sedans");
         }
         System.out.println("SEDAN is equels");
-        CarType carType = repository.findByName("SEDAN")
+        CarType carType = repository.findByName(SEDAN.getCode().toString())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Sedan sedan = new Sedan();

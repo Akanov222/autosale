@@ -12,7 +12,6 @@ public enum CarTypeEnum {
 
     private final String code;
 
-    @JsonValue
     public String getCode() {
         return code;
     }
@@ -21,7 +20,6 @@ public enum CarTypeEnum {
         this.code = code;
     }
 
-    @JsonCreator
     public static CarTypeEnum fromCode(String code) {
         return Arrays.stream(CarTypeEnum.values())
                 .filter(t -> t.code.equals(code))

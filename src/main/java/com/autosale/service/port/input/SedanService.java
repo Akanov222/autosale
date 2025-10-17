@@ -32,7 +32,7 @@ public class SedanService implements CarService<Sedan> {
 
     @Override
     public String getType() {
-        return "SEDAN";
+        return SEDAN.getCode().toString();
     }
 
     @Override
