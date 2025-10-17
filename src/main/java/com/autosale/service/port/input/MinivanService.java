@@ -1,8 +1,8 @@
 package com.autosale.service.port.input;
 
 import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Minivan;
-import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.car.MinivanRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,6 @@ public class MinivanService implements CarService {
 
     @Override
     public String getType() {
-        return "MINIVAN";
+        return CarTypeEnum.MINIVAN.getCode();
     }
-
-//    @Override
-//    public Long getTypeId() {
-//        return 3L;
-//    }
 }

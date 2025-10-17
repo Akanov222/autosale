@@ -20,7 +20,6 @@ public class CarType {
     private Long id;
 
     @NotBlank
-//    @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private String name;
 }

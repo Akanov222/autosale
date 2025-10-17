@@ -8,8 +8,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-import static com.autosale.model.entity.car.CarTypeEnum.SEDAN;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,6 +26,6 @@ public class SedanRequestDTO extends CarRequestDTO {
 
     @Override
     public String getCarTypeName() {
-        return SEDAN.getCode();
+        return CarTypeEnum.SEDAN.getCode();
     }
 }

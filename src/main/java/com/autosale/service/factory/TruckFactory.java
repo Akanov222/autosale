@@ -4,12 +4,13 @@ import com.autosale.dto.CarRequestDTO;
 import com.autosale.dto.TruckRequestDTO;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
+import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.car.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.autosale.model.entity.car.CarTypeEnum.TRUCK;
+import com.autosale.model.entity.car.CarTypeEnum;
 
 @Component
 public class TruckFactory implements CarFactory {
@@ -23,16 +24,17 @@ public class TruckFactory implements CarFactory {
 
     @Override
     public String getType() {
-        return TRUCK.getCode();
+        return CarTypeEnum.TRUCK.getCode();
     }
 
     @Override
     public Car createCar(String type, CarRequestDTO request) {
-        if (!TRUCK.getCode().equalsIgnoreCase(type)) {
+        CarTypeEnum carTypeEnum = CarTypeEnum.TRUCK;
+        if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("TruckFactory can only create trucks");
         }
 
-        CarType carType = repository.findByName(TRUCK.getCode())
+        CarType carType = repository.findByName(carTypeEnum.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Truck truck = new Truck();

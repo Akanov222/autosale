@@ -1,5 +1,6 @@
 package com.autosale.dto;
 
+import com.autosale.model.entity.car.CarTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class MinivanRequestDTO extends CarRequestDTO {
 
     @Override
     public String getCarTypeName() {
-        return "MINIVAN";
+        return CarTypeEnum.MINIVAN.getCode();
     }
 }

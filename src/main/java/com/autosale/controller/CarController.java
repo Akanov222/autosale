@@ -1,10 +1,7 @@
 package com.autosale.controller;
 
 import com.autosale.dto.*;
-import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.Minivan;
-import com.autosale.model.entity.car.Sedan;
-import com.autosale.model.entity.car.Truck;
+import com.autosale.model.entity.car.*;
 import com.autosale.service.factory.CarFactory;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.autosale.model.entity.car.CarTypeEnum.*;
+import com.autosale.model.entity.car.CarTypeEnum;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -38,24 +35,20 @@ public class CarController {
         Car specificCar = null;
         CarFactory factory = factories.get(type.toUpperCase());
         CarService service = services.get(type.toUpperCase());
-        System.out.println("point_1");
-        if (SEDAN.getCode().equalsIgnoreCase(type)) {
+
+        if (CarTypeEnum.SEDAN.getCode().equalsIgnoreCase(type)) {
             specificRequestDTO = (SedanRequestDTO) requestDTO;
             specificCar = new Sedan();
-        } else if ("MINIVAN".equalsIgnoreCase(type)) {
+        } else if (CarTypeEnum.MINIVAN.getCode().equalsIgnoreCase(type)) {
             specificRequestDTO = (MinivanRequestDTO) requestDTO;
             specificCar = new Minivan();
-        } else if ("TRUCK".equalsIgnoreCase(type)) {
+        } else if (CarTypeEnum.TRUCK.getCode().equalsIgnoreCase(type)) {
             specificRequestDTO = (TruckRequestDTO) requestDTO;
             specificCar = new Truck();
         }
-        System.out.println("point_2");
         try {
-            System.out.println("point_3");
             specificCar = factory.createCar(type, specificRequestDTO);
-            System.out.println("point_4");
             service.saveCar(specificCar);
-            System.out.println("point_5");
             return ResponseEntity.ok(CarResponse.fromCar(specificCar));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());

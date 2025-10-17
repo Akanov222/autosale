@@ -4,12 +4,13 @@ import com.autosale.dto.CarRequestDTO;
 import com.autosale.dto.MinivanRequestDTO;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
+import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Minivan;
 import com.autosale.repository.car.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.autosale.model.entity.car.CarTypeEnum.MINIVAN;
+import com.autosale.model.entity.car.CarTypeEnum;
 
 @Component
 public class MinivanFactory implements CarFactory {
@@ -23,16 +24,17 @@ public class MinivanFactory implements CarFactory {
 
     @Override
     public String getType() {
-        return MINIVAN.name();
+        return CarTypeEnum.MINIVAN.getCode();
     }
 
     @Override
     public Car createCar(String type, CarRequestDTO request) {
-        if (!"MINIVAN".equalsIgnoreCase(type)) {
+        CarTypeEnum carTypeEnum = CarTypeEnum.MINIVAN;
+        if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("MinivanFactory can only create minivans");
         }
 
-        CarType carType = repository.findByName(MINIVAN.name())
+        CarType carType = repository.findByName(carTypeEnum.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Minivan minivan = new Minivan();

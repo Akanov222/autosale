@@ -1,6 +1,7 @@
 package com.autosale.service.port.input;
 
 import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.car.TruckRepository;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,6 @@ public class TruckService implements CarService{
 
     @Override
     public String getType() {
-        return "TRUCK";
+        return CarTypeEnum.TRUCK.getCode();
     }
-
-//    @Override
-//    public Long getTypeId() {
-//        return 2L;
-//    }
 }
