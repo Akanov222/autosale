@@ -8,6 +8,6 @@ public interface CarService<T extends Car> {
 
     void saveCar(T car);
     String getType();
-    Long getTypeId();
+//    Long getTypeId();
 }
 

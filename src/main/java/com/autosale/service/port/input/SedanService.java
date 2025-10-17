@@ -32,11 +32,11 @@ public class SedanService implements CarService<Sedan> {
 
     @Override
     public String getType() {
-        return SEDAN.getCode().toString();
+        return SEDAN.getCode();
     }
 
-    @Override
-    public Long getTypeId() {
-        return 1L;
-    }
+//    @Override
+//    public Long getTypeId() {
+//        return 1L;
+//    }
 }

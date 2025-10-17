@@ -26,8 +26,8 @@ public class MinivanService implements CarService {
         return "MINIVAN";
     }
 
-    @Override
-    public Long getTypeId() {
-        return 3L;
-    }
+//    @Override
+//    public Long getTypeId() {
+//        return 3L;
+//    }
 }

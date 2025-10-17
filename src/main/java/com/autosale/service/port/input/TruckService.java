@@ -25,8 +25,8 @@ public class TruckService implements CarService{
         return "TRUCK";
     }
 
-    @Override
-    public Long getTypeId() {
-        return 2L;
-    }
+//    @Override
+//    public Long getTypeId() {
+//        return 2L;
+//    }
 }
