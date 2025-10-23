@@ -31,27 +31,18 @@ public class CarController {
         public ResponseEntity<?> createCar(@PathVariable String type,
             @RequestBody CarRequestDTO requestDTO) {
 
-        CarRequestDTO specificRequestDTO = null;
-        Car specificCar = null;
         CarFactory factory = factories.get(type.toUpperCase());
         CarService service = services.get(type.toUpperCase());
 
-        if (CarTypeEnum.SEDAN.getCode().equalsIgnoreCase(type)) {
-            specificRequestDTO = (SedanRequestDTO) requestDTO;
-            specificCar = new Sedan();
-        } else if (CarTypeEnum.MINIVAN.getCode().equalsIgnoreCase(type)) {
-            specificRequestDTO = (MinivanRequestDTO) requestDTO;
-            specificCar = new Minivan();
-        } else if (CarTypeEnum.TRUCK.getCode().equalsIgnoreCase(type)) {
-            specificRequestDTO = (TruckRequestDTO) requestDTO;
-            specificCar = new Truck();
-        }
         try {
-            specificCar = factory.createCar(type, specificRequestDTO);
+            Car specificCar = factory.createCar(type, requestDTO);
             service.saveCar(specificCar);
             return ResponseEntity.ok(CarResponse.fromCar(specificCar));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
+
     }
 }
+
+

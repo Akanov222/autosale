@@ -5,7 +5,7 @@ import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
 import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
-import com.autosale.repository.car.CarTypeRepository;
+import com.autosale.repository.factory.CarTypeRepository;
 import org.springframework.stereotype.Component;
 
 @Component

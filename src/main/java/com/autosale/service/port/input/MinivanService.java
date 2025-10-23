@@ -3,7 +3,7 @@ package com.autosale.service.port.input;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Minivan;
-import com.autosale.repository.car.MinivanRepository;
+import com.autosale.repository.factory.MinivanRepository;
 import org.springframework.stereotype.Service;
 
 @Service

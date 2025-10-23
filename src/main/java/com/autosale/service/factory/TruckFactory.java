@@ -6,11 +6,9 @@ import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
 import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
-import com.autosale.repository.car.CarTypeRepository;
+import com.autosale.repository.factory.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.autosale.model.entity.car.CarTypeEnum;
 
 @Component
 public class TruckFactory implements CarFactory {
