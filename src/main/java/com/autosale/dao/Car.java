@@ -1,4 +1,4 @@
-package com.example.autosale.dao;
+package com.autosale.dao;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;

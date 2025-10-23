@@ -1,4 +1,4 @@
-package com.example.autosale.dto;
+package com.autosale.dto;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;

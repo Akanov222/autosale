@@ -1,7 +1,7 @@
-package com.example.autosale.service;
+package com.autosale.service;
 
-import com.example.autosale.dao.CarType;
-import com.example.autosale.repository.CarTypeRepository;
+import com.autosale.dao.CarType;
+import com.autosale.repository.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

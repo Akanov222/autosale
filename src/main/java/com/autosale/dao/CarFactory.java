@@ -1,10 +1,10 @@
-package com.example.autosale.dao;
+package com.autosale.dao;
 
-import com.example.autosale.dto.CarRequest;
-import com.example.autosale.dto.MinivanRequest;
-import com.example.autosale.dto.SedanRequest;
-import com.example.autosale.dto.TruckRequest;
-import com.example.autosale.service.CarTypeService;
+import com.autosale.dto.CarRequest;
+import com.autosale.dto.MinivanRequest;
+import com.autosale.dto.SedanRequest;
+import com.autosale.dto.TruckRequest;
+import com.autosale.service.CarTypeService;
 import org.springframework.stereotype.Component;
 
 @Component

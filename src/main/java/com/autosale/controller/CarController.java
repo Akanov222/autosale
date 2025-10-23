@@ -1,11 +1,11 @@
-package com.example.autosale.controller;
+package com.autosale.controller;
 
-import com.example.autosale.dao.*;
-import com.example.autosale.dto.*;
-import com.example.autosale.repository.MinivanRepository;
-import com.example.autosale.repository.SedanRepository;
-import com.example.autosale.repository.TruckRepository;
-import com.example.autosale.service.CarTypeService;
+import com.autosale.dao.*;
+import com.autosale.dto.*;
+import com.autosale.repository.MinivanRepository;
+import com.autosale.repository.SedanRepository;
+import com.autosale.repository.TruckRepository;
+import com.autosale.service.CarTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

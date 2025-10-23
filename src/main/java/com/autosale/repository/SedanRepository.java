@@ -1,6 +1,6 @@
-package com.example.autosale.repository;
+package com.autosale.repository;
 
-import com.example.autosale.dao.Sedan;
+import com.autosale.dao.Sedan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
