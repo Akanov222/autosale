@@ -28,4 +28,11 @@ public class TruckRequestDTO extends CarRequestDTO {
     public String getCarTypeName() {
         return CarTypeEnum.TRUCK.getCode();
     }
+
+    @Override
+    public String toString() {
+        return "TruckRequestDTO{" +
+                "loadCapacity=" + loadCapacity +
+                '}';
+    }
 }

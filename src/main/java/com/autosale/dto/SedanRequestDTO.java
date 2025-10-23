@@ -28,4 +28,11 @@ public class SedanRequestDTO extends CarRequestDTO {
     public String getCarTypeName() {
         return CarTypeEnum.SEDAN.getCode();
     }
+
+    @Override
+    public String toString() {
+        return "SedanRequestDTO{" +
+                "trunkCapacity=" + trunkCapacity +
+                '}';
+    }
 }

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class SedanService implements CarService<Sedan> {
+public class SedanRepositoryService implements CarRepositoryService<Sedan> {
 
     private final SedanRepository sedanRepository;
 
     @Autowired
-    public SedanService(SedanRepository sedanRepository) {
+    public SedanRepositoryService(SedanRepository sedanRepository) {
         this.sedanRepository = sedanRepository;
     }
 

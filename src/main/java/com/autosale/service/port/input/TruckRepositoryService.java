@@ -7,11 +7,11 @@ import com.autosale.repository.factory.TruckRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TruckService implements CarService{
+public class TruckRepositoryService implements CarRepositoryService {
 
     private final TruckRepository repository;
 
-    public TruckService(TruckRepository repository) {
+    public TruckRepositoryService(TruckRepository repository) {
         this.repository = repository;
     }
 

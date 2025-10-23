@@ -27,4 +27,11 @@ public class MinivanRequestDTO extends CarRequestDTO {
     public String getCarTypeName() {
         return CarTypeEnum.MINIVAN.getCode();
     }
+
+    @Override
+    public String toString() {
+        return "MinivanRequestDTO{" +
+                "seatingCapacity=" + seatingCapacity +
+                '}';
+    }
 }
