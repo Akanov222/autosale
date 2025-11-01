@@ -17,11 +17,20 @@ public class CarController {
         this.carService = carService;
     }
 
+    @PostMapping("/{type}/{id}")
+    public CarResponse getCarById(@PathVariable String type, @PathVariable Long id) {
+        return carService.getCarById(type, id);
+    }
+
     @PostMapping("/{type}")
-        public void /*ResponseEntity<?>*/ createCar(@PathVariable String type, @RequestBody CarRequestDTO requestDTO) {
-
+    public void /*ResponseEntity<?>*/ createCar(
+            @PathVariable String type, @RequestBody CarRequestDTO requestDTO) {
         carService.saveCar(type, requestDTO);
+    }
 
+    @DeleteMapping("/{type}/{id}")
+    public void deleteCar(@PathVariable String type, @PathVariable Long id) {
+        carService.deleteCar(type, id);
     }
 }
 

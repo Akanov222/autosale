@@ -1,5 +1,7 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarResponse;
+import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.factory.SedanRepository;
@@ -20,6 +22,18 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     @Override
     public void saveCar(Sedan sedan) {
         sedanRepository.save(sedan);
+    }
+
+    @Override
+    public void deleteCarById(Long id) {
+        sedanRepository.deleteById(id);
+    }
+
+    @Override
+    public CarResponse getCarById(Long id) {
+        Car sedan = new Sedan();
+        sedan = sedanRepository.getReferenceById(id);
+        return CarResponse.fromCar(sedan);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.autosale.service.port.input;
 
 import com.autosale.dto.CarRequestDTO;
+import com.autosale.dto.CarResponse;
 import com.autosale.model.entity.car.Car;
 import com.autosale.service.factory.CarFactory;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,19 @@ public class CarService {
     }
 
     public void saveCar(String type, CarRequestDTO carRequestDTO) {
-
         CarFactory factory = factories.get(type.toUpperCase());
         Car specificCar = factory.createCar(type, carRequestDTO);
         CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
         repositoryService.saveCar(specificCar);
+    }
 
+    public void deleteCar(String type, Long id) {
+        CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
+        repositoryService.deleteCarById(id);
+    }
+
+    public CarResponse getCarById(String type, Long id) {
+        CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
+        return repositoryService.getCarById(id);
     }
 }

@@ -23,17 +23,17 @@ public abstract class User {
     @NotNull
     private String firstName;
 
-    @NonNull
+    @NotNull
     @Email
     private String email;
 
-    @NonNull
+    @NotNull
     private String password;
 
-    @NonNull
+    @NotNull
     private LocalDateTime createdAt;
 
-    @NonNull
+    @NotNull
     private boolean active = true;
 
 }

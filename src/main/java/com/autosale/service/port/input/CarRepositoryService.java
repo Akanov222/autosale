@@ -1,13 +1,15 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarResponse;
 import com.autosale.model.entity.car.Car;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CarRepositoryService<T extends Car> {
 
-    void saveCar(T car);
     String getType();
-//    Long getTypeId();
+    void saveCar(T car);
+    void deleteCarById(Long id);
+    CarResponse getCarById(Long id);
 }
 

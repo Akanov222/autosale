@@ -9,16 +9,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class TruckRepositoryService implements CarRepositoryService {
 
-    private final TruckRepository repository;
+    private final TruckRepository truckRepository;
 
-    public TruckRepositoryService(TruckRepository repository) {
-        this.repository = repository;
+    public TruckRepositoryService(TruckRepository truckRepository) {
+        this.truckRepository = truckRepository;
     }
 
     @Override
     public void saveCar(Car car) {
         Truck truck = (Truck) car;
-        repository.save(truck);
+        truckRepository.save(truck);
+    }
+
+    @Override
+    public void deleteCarById(Long id) {
+        truckRepository.deleteById(id);
     }
 
     @Override
