@@ -1,59 +1,38 @@
 package com.autosale.controller;
 
 import com.autosale.dto.*;
-import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.Minivan;
-import com.autosale.model.entity.car.Sedan;
-import com.autosale.model.entity.car.Truck;
-import com.autosale.service.factory.CarFactory;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cars")
 @Tag(name = "Car API", description = "Управление автомобилями в автосалоне")
 public class CarController {
 
-    private final Map<String, CarFactory> factories;
-    private final Map<String, CarService> services;
+    private final CarService carService;
 
-    public CarController(List<CarService> services, List<CarFactory> factories) {
-        this.factories = factories.stream().collect(Collectors.toMap(CarFactory::getType, f -> f));
-        this.services = services.stream().collect(Collectors.toMap(CarService::getType, s -> s));
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
+
+    @GetMapping("/{type}/{id}")
+    public CarDto getCarById(@PathVariable String type, @PathVariable Long id) {
+        return carService.getCarById(type, id);
     }
 
     @PostMapping("/{type}")
-        public ResponseEntity<?> createCar(@PathVariable String type,
-            @RequestBody CarRequestDTO requestDTO) {
+    public void /*ResponseEntity<?>*/ createCar(
+            @PathVariable String type, @RequestBody CarDto requestDTO) {
+        carService.saveCar(type, requestDTO);
+    }
 
-        CarRequestDTO specificRequestDTO = null;
-        Car specificCar = null;
-        CarFactory factory = factories.get(type.toUpperCase());
-        CarService service = services.get(type.toUpperCase());
-
-        if ("SEDAN".equalsIgnoreCase(type)) {
-            specificRequestDTO = (SedanRequestDTO) requestDTO;
-            specificCar = new Sedan();
-        } else if ("MINIVAN".equalsIgnoreCase(type)) {
-            specificRequestDTO = (MinivanRequestDTO) requestDTO;
-            specificCar = new Minivan();
-        } else if ("TRUCK".equalsIgnoreCase(type)) {
-            specificRequestDTO = (TruckRequestDTO) requestDTO;
-            specificCar = new Truck();
-        }
-
-        try {
-            specificCar = factory.createCar(type, specificRequestDTO);
-            service.saveCar(specificCar);
-            return ResponseEntity.ok(CarResponse.fromCar(specificCar));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+    @DeleteMapping("/{type}/{id}")
+    public void deleteCar(@PathVariable String type, @PathVariable Long id) {
+        carService.deleteCar(type, id);
     }
 }
+
+

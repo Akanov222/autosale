@@ -1,4 +1,4 @@
-package com.autosale.repository.car;
+package com.autosale.repository.factory;
 
 import com.autosale.model.entity.car.CarType;
 import org.springframework.data.jpa.repository.JpaRepository;

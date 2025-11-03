@@ -21,11 +21,6 @@ public class Sedan extends Car{
     @Column(name = "trunk_capacity")
     private Double trunkCapacity;
 
-    @Getter
-    @Setter
-    @Column(name = "car_type_name", nullable = false)
-    private String carTypeName;
-
     public Sedan(String brand, String model,
                  Integer year, CarType carType, BigDecimal price, Double trunkCapacity) {
         super(brand, model, year, carType, price);

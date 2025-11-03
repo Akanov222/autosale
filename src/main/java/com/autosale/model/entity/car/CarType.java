@@ -20,5 +20,6 @@ public class CarType {
     private Long id;
 
     @NotBlank
+    @Column(name = "name")
     private String name;
 }
