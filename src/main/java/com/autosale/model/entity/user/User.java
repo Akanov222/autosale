@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+//@Entity
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

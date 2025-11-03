@@ -1,6 +1,7 @@
-package com.autosale.service.factory;
+package com.autosale.service.requestFactory;
 
-import com.autosale.dto.SedanRequestDTO;
+import com.autosale.dto.CarDto;
+import com.autosale.dto.SedanDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
 import com.autosale.model.entity.car.CarTypeEnum;
@@ -9,11 +10,11 @@ import com.autosale.repository.factory.CarTypeRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SedanFactory implements CarFactory<SedanRequestDTO> {
+public class SedanRequestFactory implements CarRequestFactory {
 
     private final CarTypeRepository repository;
 
-    public SedanFactory(CarTypeRepository repository) {
+    public SedanRequestFactory(CarTypeRepository repository) {
         this.repository = repository;
     }
 
@@ -23,20 +24,22 @@ public class SedanFactory implements CarFactory<SedanRequestDTO> {
     }
 
     @Override
-    public Car createCar(String type, SedanRequestDTO sedanRequestDTO) {
+    public Car createCar(String type, CarDto carDto) {
         CarTypeEnum carTypeEnum = CarTypeEnum.SEDAN;
         if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("SedanFactory can only create sedans");
         }
+
         CarType carType = repository.findByName(carTypeEnum.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
+
         Sedan sedan = new Sedan();
-        sedan.setBrand(sedanRequestDTO.getBrand());
-        sedan.setModel(sedanRequestDTO.getModel());
-        sedan.setYear(sedanRequestDTO.getYear());
+        sedan.setBrand(carDto.getBrand());
+        sedan.setModel(carDto.getModel());
+        sedan.setYear(carDto.getYear());
         sedan.setCarType(carType);
-        sedan.setPrice(sedanRequestDTO.getPrice());
-        sedan.setTrunkCapacity(sedanRequestDTO.getTrunkCapacity());
+        sedan.setPrice(carDto.getPrice());
+        sedan.setTrunkCapacity(((SedanDto)carDto).getTrunkCapacity());
         return sedan;
     }
 }

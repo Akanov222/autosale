@@ -1,7 +1,7 @@
-package com.autosale.service.factory;
+package com.autosale.service.requestFactory;
 
-import com.autosale.dto.CarRequestDTO;
-import com.autosale.dto.MinivanRequestDTO;
+import com.autosale.dto.CarDto;
+import com.autosale.dto.MinivanDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
 import com.autosale.model.entity.car.CarTypeEnum;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MinivanFactory implements CarFactory {
+public class MinivanRequestFactory implements CarRequestFactory {
 
     private final CarTypeRepository repository;
 
     @Autowired
-    public MinivanFactory(CarTypeRepository repository) {
+    public MinivanRequestFactory(CarTypeRepository repository) {
         this.repository = repository;
     }
 
@@ -26,7 +26,7 @@ public class MinivanFactory implements CarFactory {
     }
 
     @Override
-    public Car createCar(String type, CarRequestDTO request) {
+    public Car createCar(String type, CarDto carDto) {
         CarTypeEnum carTypeEnum = CarTypeEnum.MINIVAN;
         if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("MinivanFactory can only create minivans");
@@ -36,13 +36,12 @@ public class MinivanFactory implements CarFactory {
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Minivan minivan = new Minivan();
-        minivan.setBrand(request.getBrand());
-        minivan.setModel(request.getModel());
-        minivan.setYear(request.getYear());
+        minivan.setBrand(carDto.getBrand());
+        minivan.setModel(carDto.getModel());
+        minivan.setYear(carDto.getYear());
         minivan.setCarType(carType);
-        minivan.setPrice(request.getPrice());
-        minivan.setSeatingCapacity(((MinivanRequestDTO) request).getSeatingCapacity());
+        minivan.setPrice(carDto.getPrice());
+        minivan.setSeatingCapacity(((MinivanDto) carDto).getSeatingCapacity());
         return minivan;
-
     }
 }

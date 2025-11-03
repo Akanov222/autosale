@@ -11,15 +11,15 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TruckRequestDTO extends CarRequestDTO {
+public class TruckDto extends CarDto {
 
     @JsonProperty("loadCapacity")
     private Double loadCapacity;
 
 
-    public TruckRequestDTO(String brand, String model, Integer year,
-                           String carTypeName, BigDecimal price,
-                           Double loadCapacity) {
+    public TruckDto(String brand, String model, Integer year,
+                    String carTypeName, BigDecimal price,
+                    Double loadCapacity) {
         super(brand, model, year, carTypeName, price);
         this.loadCapacity = loadCapacity;
     }

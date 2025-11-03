@@ -27,6 +27,11 @@ public class TruckRepositoryService implements CarRepositoryService {
     }
 
     @Override
+    public Car getCarById(Long id) {
+        return truckRepository.getReferenceById(id);
+    }
+
+    @Override
     public String getType() {
         return CarTypeEnum.TRUCK.getCode();
     }

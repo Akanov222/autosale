@@ -1,7 +1,7 @@
-package com.autosale.service.factory;
+package com.autosale.service.requestFactory;
 
-import com.autosale.dto.CarRequestDTO;
-import com.autosale.dto.TruckRequestDTO;
+import com.autosale.dto.CarDto;
+import com.autosale.dto.TruckDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
 import com.autosale.model.entity.car.CarTypeEnum;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TruckFactory implements CarFactory {
+public class TruckRequestFactory implements CarRequestFactory {
 
     private final CarTypeRepository repository;
 
     @Autowired
-    public TruckFactory(CarTypeRepository repository) {
+    public TruckRequestFactory(CarTypeRepository repository) {
         this.repository = repository;
     }
 
@@ -26,7 +26,7 @@ public class TruckFactory implements CarFactory {
     }
 
     @Override
-    public Car createCar(String type, CarRequestDTO request) {
+    public Car createCar(String type, CarDto carDto) {
         CarTypeEnum carTypeEnum = CarTypeEnum.TRUCK;
         if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("TruckFactory can only create trucks");
@@ -36,12 +36,12 @@ public class TruckFactory implements CarFactory {
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
         Truck truck = new Truck();
-        truck.setBrand(request.getBrand());
-        truck.setModel(request.getModel());
-        truck.setYear(request.getYear());
+        truck.setBrand(carDto.getBrand());
+        truck.setModel(carDto.getModel());
+        truck.setYear(carDto.getYear());
         truck.setCarType(carType);
-        truck.setPrice(request.getPrice());
-        truck.setLoadCapacity(((TruckRequestDTO) request).getLoadCapacity());
+        truck.setPrice(carDto.getPrice());
+        truck.setLoadCapacity(((TruckDto) carDto).getLoadCapacity());
         return truck;
     }
 }

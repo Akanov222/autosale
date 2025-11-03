@@ -11,14 +11,14 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SedanRequestDTO extends CarRequestDTO {
+public class SedanDto extends CarDto {
 
     @JsonProperty("trunkCapacity")
     private Double trunkCapacity;
 
-    public SedanRequestDTO(String brand, String model, Integer year,
-                           String carTypeName, BigDecimal price,
-                           Double trunkCapacity) {
+    public SedanDto(String brand, String model, Integer year,
+                    String carTypeName, BigDecimal price,
+                    Double trunkCapacity) {
         super(brand, model, year, carTypeName, price);
         this.trunkCapacity = trunkCapacity;
         System.out.println("SEDAN is created");

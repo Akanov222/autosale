@@ -3,7 +3,7 @@ package com.autosale.model.entity.user;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @NoArgsConstructor
 @DiscriminatorValue("CLIENT")
 public class Client extends User {

@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Entity
+//@Entity
 @Table(name = "buyer_profiles")
 @Getter
 @Setter
