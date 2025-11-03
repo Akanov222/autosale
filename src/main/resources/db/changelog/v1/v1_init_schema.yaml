@@ -58,9 +58,9 @@ databaseChangeLog:
             - onFail: MARK_RAN
             - not:
                 - tableExists:
-                    tableName: car
+                    tableName: sedan
         - createTable:
-            tableName: car
+            tableName: sedan
             columns:
               - column:
                   name: id
@@ -87,11 +87,6 @@ databaseChangeLog:
                   name: car_type_id
                   type: bigint
               - column:
-                  name: car_type_name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
                   name: price
                   type: NUMERIC(10,2)
                   constraints:
@@ -99,13 +94,186 @@ databaseChangeLog:
               - column:
                   name: trunk_capacity
                   type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: sedan
+            baseColumnNames: car_type_id
+            constraintName: fk_sedan_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
+
+        - insert:
+            tableName: sedan
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: brand
+                  value: "Chevrolet"
+              - column:
+                  name: model
+                  value: "Colorado"
+              - column:
+                  name: year
+                  value: 2010
+              - column:
+                  name: car_type_id
+                  value: 1
+              - column:
+                  name: price
+                  value: 25000.0
+              - column:
+                  name: trunk_capacity
+                  value: 456.0
+
+  - changeSet:
+      id: 3
+      author: your_name
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: truck
+        - createTable:
+            tableName: truck
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_id
+                  type: bigint
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
               - column:
                   name: load_capacity
                   type: NUMERIC(10,2)
+        - addForeignKeyConstraint:
+            baseTableName: truck
+            baseColumnNames: car_type_id
+            constraintName: fk_truck_car_type
+            referencedTableName: car_type
+            referencedColumnNames: id
+
+        - insert:
+            tableName: truck
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: brand
+                  value: "Chevrolet"
+              - column:
+                  name: model
+                  value: "Blazer"
+              - column:
+                  name: year
+                  value: 2010
+              - column:
+                  name: car_type_id
+                  value: 2
+              - column:
+                  name: price
+                  value: 35000.0
+              - column:
+                  name: load_capacity
+                  value: 456.0
+
+  - changeSet:
+      id: 4
+      author: your_name
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    tableName: minivan
+        - createTable:
+            tableName: minivan
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_type_id
+                  type: bigint
+              - column:
+                  name: price
+                  type: NUMERIC(10,2)
+                  constraints:
+                    nullable: false
               - column:
                   name: seating_capacity
                   type: NUMERIC(10,2)
         - addForeignKeyConstraint:
-            baseTableName: car
+            baseTableName: minivan
             baseColumnNames: car_type_id
+            constraintName: fk_minivan_car_type
+            referencedTableName: car_type
             referencedColumnNames: id
+
+        - insert:
+            tableName: minivan
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: brand
+                  value: "Chevrolet"
+              - column:
+                  name: model
+                  value: "Minivan"
+              - column:
+                  name: year
+                  value: 2010
+              - column:
+                  name: car_type_id
+                  value: 3
+              - column:
+                  name: price
+                  value: 35000.0
+              - column:
+                  name: seating_capacity
+                  value: 8.0

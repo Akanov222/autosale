@@ -1,7 +1,12 @@
+DROP DATABASE cardealer_db;
+CREATE DATABASE cardealer_db;
+
 DROP TABLE IF EXISTS sedan;
 DROP TABLE IF EXISTS minivan;
 DROP TABLE IF EXISTS truck;
 DROP TABLE IF EXISTS car_type;
+DROP TABLE IF EXISTS databasechangelog CASCADE;
+DROP TABLE IF EXISTS databasechangeloglock CASCADE;
 
 CREATE TABLE car_type
 (
@@ -49,11 +54,11 @@ CREATE TABLE truck (
 INSERT INTO sedan VALUES (100,'Chevrolet', 'COLODADO', 2010, 1,
                           25000.0,456.0);
 
-INSERT INTO minivan VALUES (100,'Chevrolet', 'MINIVAN', 2010, 2,
+INSERT INTO truck VALUES (100,'Chevrolet', 'Tachoe', 2010, 2,
                           35000.0,456.0);
 
-INSERT INTO truck VALUES (100,'Chevrolet', 'Tachoe', 2010, 3,
-                            35000.0,456.0);
+INSERT INTO minivan VALUES (100,'Chevrolet', 'MINIVAN', 2010, 3,
+                          35000.0,8.0);
 
 SELECT * FROM sedan;
 SELECT * FROM minivan;

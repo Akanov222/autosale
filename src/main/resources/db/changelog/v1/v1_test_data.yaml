@@ -7,6 +7,9 @@ databaseChangeLog:
             tableName: sedan
             columns:
               - column:
+                  name: id
+                  value: 2
+              - column:
                   name: brand
                   value: "Toyota"
               - column:
@@ -14,13 +17,13 @@ databaseChangeLog:
                   value: "Camry"
               - column:
                   name: year
-                  value: "2021"
+                  value: 2021
               - column:
-                  name: car_type
-                  value: "sedan"
+                  name: car_type_id
+                  value: 1
               - column:
                   name: price
-                  value: "25000.0"
+                  value: 25000.0
               - column:
                   name: trunk_capacity
-                  value: "493.0"
+                  value: 493.0
