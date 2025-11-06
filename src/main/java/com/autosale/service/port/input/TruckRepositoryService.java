@@ -1,10 +1,12 @@
 package com.autosale.service.port.input;
 
 import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.CarTypeEnum;
+import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.factory.TruckRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class TruckRepositoryService implements CarRepositoryService {
@@ -27,8 +29,8 @@ public class TruckRepositoryService implements CarRepositoryService {
     }
 
     @Override
-    public Car getCarById(Long id) {
-        return truckRepository.getReferenceById(id);
+    public Optional<Car> getCarById(Long id) {
+        return truckRepository.findById(id).map(car -> car);
     }
 
     @Override

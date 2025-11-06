@@ -1,6 +1,4 @@
-package com.autosale.model.entity.car;
-
-import jakarta.validation.constraints.NotBlank;
+package com.autosale.model.enums;
 
 import java.util.Arrays;
 

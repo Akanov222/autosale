@@ -4,7 +4,7 @@ import com.autosale.dto.CarDto;
 import com.autosale.dto.TruckDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
-import com.autosale.model.entity.car.CarTypeEnum;
+import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.factory.CarTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

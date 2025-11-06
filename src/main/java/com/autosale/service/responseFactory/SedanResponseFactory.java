@@ -1,10 +1,12 @@
 package com.autosale.service.responseFactory;
 
 import com.autosale.dto.CarDto;
+import com.autosale.dto.CarResponseDto;
 import com.autosale.dto.SedanDto;
+import com.autosale.dto.SedanResponseDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.entity.car.CarType;
-import com.autosale.model.entity.car.CarTypeEnum;
+import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.factory.CarTypeRepository;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ public class SedanResponseFactory implements CarResponseFactory {
     }
 
     @Override
-    public CarDto createCarDto(String type, Car car) {
+    public CarResponseDto createCarDto(String type, Car car) {
         CarTypeEnum carTypeEnum = CarTypeEnum.SEDAN;
         if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
             throw new IllegalArgumentException("SedanFactory can only create sedans");
@@ -33,7 +35,7 @@ public class SedanResponseFactory implements CarResponseFactory {
         CarType carType = repository.findByName(carTypeEnum.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
 
-        SedanDto sedanDto = new SedanDto();
+        SedanResponseDto sedanDto = new SedanResponseDto();
         sedanDto.setBrand(car.getBrand());
         sedanDto.setModel(car.getModel());
         sedanDto.setYear(car.getYear());

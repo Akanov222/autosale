@@ -1,12 +1,13 @@
 package com.autosale.service.port.input;
 
-import com.autosale.dto.CarDto;
 import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.CarTypeEnum;
+import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.factory.SedanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SedanRepositoryService implements CarRepositoryService<Sedan> {
@@ -19,6 +20,11 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     }
 
     @Override
+    public Optional<Car> getCarById(Long id) {
+        return sedanRepository.findById(id).map(car -> car);
+    }
+
+    @Override
     public void saveCar(Sedan sedan) {
         sedanRepository.save(sedan);
     }
@@ -26,11 +32,6 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     @Override
     public void deleteCarById(Long id) {
         sedanRepository.deleteById(id);
-    }
-
-    @Override
-    public Car getCarById(Long id) {
-        return sedanRepository.getReferenceById(id);
     }
 
     @Override
