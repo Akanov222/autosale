@@ -1,5 +1,6 @@
 package com.autosale.dto;
 
+import com.autosale.model.entity.car.CarType;
 import com.autosale.model.enums.CarTypeEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class MinivanResponseDto extends CarResponseDto {
     private Double seatingCapacity;
 
     public MinivanResponseDto(Long id, String brand, String model, Integer year,
-                              String carTypeName, BigDecimal price,
+                              CarType carTypeName, BigDecimal price,
                               Double seatingCapacity) {
         super(id, brand, model, year, carTypeName, price);
         this.seatingCapacity = seatingCapacity;

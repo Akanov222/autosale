@@ -2,6 +2,9 @@ package com.autosale.dto;
 
 import com.autosale.model.enums.CarTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +17,9 @@ import java.math.BigDecimal;
 public class SedanDto extends CarDto {
 
     @JsonProperty("trunkCapacity")
+    @NotBlank (message = "trunkCapacity must not be blank" )
+    @Min(value = 10)
+    @Max(value = 4000)
     private Double trunkCapacity;
 
     public SedanDto(String brand, String model, Integer year,

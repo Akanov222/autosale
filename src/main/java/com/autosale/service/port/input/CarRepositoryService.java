@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CarRepositoryService<T extends Car> {
 
     String getType();
-    void saveCar(T car);
+    Optional<Car> saveCar(T car);
     void deleteCarById(Long id);
     Optional<Car> getCarById(Long id);
 }

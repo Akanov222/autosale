@@ -29,14 +29,23 @@ public class CarController {
     @PostMapping("/{type}")
     public ResponseEntity<?> createCar(
             @PathVariable String type, @RequestBody CarDto requestDTO) {
+        return carService.saveCar(type, requestDTO)
+                .map(carResponseDto ->
+                        ResponseEntity.created(URI.create("/api/cars/" + type + "/" + carResponseDto.getId()))
+                                .body(carResponseDto)
+                )
+                                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+/*
         CarResponseDto carResponseDto = carService.saveCar(type, requestDTO);
+.body("Invalid car type")
         if (carResponseDto == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("A car with this chassis number already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("A car with this chassis number is already exists");
         }
 
-        return ResponseEntity.created(URI.create("/api/cars/type/45" + carResponseDto.getId()))
-                .body(carResponseDto);
-    }
+        return ResponseEntity.created(URI.create("/api/cars/type/" + carResponseDto.getId()))
+                .body(carResponseDto);*/
 
     @DeleteMapping("/{type}/{id}")
     public void deleteCar(@PathVariable String type, @PathVariable Long id) {

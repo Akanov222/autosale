@@ -1,5 +1,9 @@
 package com.autosale.dto;
 
+import com.autosale.model.entity.car.CarType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +28,9 @@ public abstract class CarResponseDto {
     @Getter
     private Integer year;
 
-    private String carTypeName;
+    @ManyToOne(fetch = FetchType.LAZY)  // Указываем связь с CarType
+    @JoinColumn(name = "car_type_id", referencedColumnName = "id", nullable = false)
+    private CarType carTypeName;
 
     @Getter
     private BigDecimal price;

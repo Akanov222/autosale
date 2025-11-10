@@ -25,8 +25,8 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     }
 
     @Override
-    public void saveCar(Sedan sedan) {
-        sedanRepository.save(sedan);
+    public Optional<Car> saveCar(Sedan sedan) {
+        return Optional.of(sedanRepository.save(sedan));
     }
 
     @Override

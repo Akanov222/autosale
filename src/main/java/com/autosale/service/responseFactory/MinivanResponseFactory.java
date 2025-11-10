@@ -39,7 +39,7 @@ public class MinivanResponseFactory implements CarResponseFactory {
         minivanDto.setBrand(car.getBrand());
         minivanDto.setModel(car.getModel());
         minivanDto.setYear(car.getYear());
-        minivanDto.setCarTypeName(carType.getName());
+        minivanDto.setCarTypeName(carType);
         minivanDto.setPrice(car.getPrice());
         minivanDto.setSeatingCapacity(((Minivan)car).getSeatingCapacity());
         return minivanDto;

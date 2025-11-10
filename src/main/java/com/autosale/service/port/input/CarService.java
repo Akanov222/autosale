@@ -42,13 +42,18 @@ public class CarService {
         return carOptional.flatMap(car -> Optional.ofNullable(factory.createCarDto(type, car)));
     }
 
-    public CarResponseDto saveCar(String type, CarDto carDto) {
-        CarRequestFactory factory = requestFactories.get(type.toUpperCase());
+    public Optional<CarResponseDto> saveCar(String type, CarDto carDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRequestFactory factory = requestFactories.get(upperCaseType);
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (factory == null || repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
         Car specificCar = factory.createCar(type, carDto);
-        CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
-        repositoryService.saveCar(specificCar);
-        CarResponseFactory factoryResponse = responseFactories.get(type.toUpperCase());
-        return factoryResponse.createCarDto(type, specificCar);
+        Optional<Car> carOptional = repositoryService.saveCar(specificCar);
+
+        return carOptional.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
     }
 
     public void deleteCar(String type, Long id) {

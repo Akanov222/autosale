@@ -39,7 +39,7 @@ public class SedanResponseFactory implements CarResponseFactory {
         sedanDto.setBrand(car.getBrand());
         sedanDto.setModel(car.getModel());
         sedanDto.setYear(car.getYear());
-        sedanDto.setCarTypeName(carType.getName());
+        sedanDto.setCarTypeName(carType);
         sedanDto.setPrice(car.getPrice());
         sedanDto.setTrunkCapacity(((Sedan)car).getTrunkCapacity());
         return sedanDto;

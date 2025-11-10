@@ -39,7 +39,7 @@ public class TruckResponseFactory implements CarResponseFactory {
         truckDto.setBrand(car.getBrand());
         truckDto.setModel(car.getModel());
         truckDto.setYear(car.getYear());
-        truckDto.setCarTypeName(carType.getName());
+        truckDto.setCarTypeName(carType);
         truckDto.setPrice(car.getPrice());
         truckDto.setLoadCapacity(((Truck)car).getLoadCapacity());
         return truckDto;

@@ -18,9 +18,9 @@ public class MinivanRepositoryService implements CarRepositoryService {
     }
 
     @Override
-    public void saveCar(Car car) {
+    public Optional<Car> saveCar(Car car) {
         Minivan minivan = (Minivan) car;
-        minivanRepository.save(minivan);
+        return Optional.of(minivanRepository.save(minivan));
     }
 
     @Override
