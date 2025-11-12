@@ -1,6 +1,7 @@
 package com.autosale.controller;
 
 import com.autosale.dto.*;
+import com.autosale.exception.InvalidCarTypeException;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -34,18 +38,8 @@ public class CarController {
                         ResponseEntity.created(URI.create("/api/cars/" + type + "/" + carResponseDto.getId()))
                                 .body(carResponseDto)
                 )
-                                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new InvalidCarTypeException("Invalid car type: " + type));
     }
-
-/*
-        CarResponseDto carResponseDto = carService.saveCar(type, requestDTO);
-.body("Invalid car type")
-        if (carResponseDto == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("A car with this chassis number is already exists");
-        }
-
-        return ResponseEntity.created(URI.create("/api/cars/type/" + carResponseDto.getId()))
-                .body(carResponseDto);*/
 
     @DeleteMapping("/{type}/{id}")
     public void deleteCar(@PathVariable String type, @PathVariable Long id) {
