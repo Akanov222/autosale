@@ -56,8 +56,16 @@ public class CarService {
         return carOptional.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
     }
 
-    public void deleteCar(String type, Long id) {
+    public boolean deleteCar(String type, Long id) {
         CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
+        if (repositoryService == null) {
+            return false;
+        }
+        Optional<Car> carOptional = repositoryService.getCarById(id);
+        if (carOptional.isEmpty()) {
+            return false;
+        }
         repositoryService.deleteCarById(id);
+        return true;
     }
 }

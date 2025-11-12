@@ -5,15 +5,10 @@ import com.autosale.exception.InvalidCarTypeException;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/cars")
@@ -42,8 +37,9 @@ public class CarController {
     }
 
     @DeleteMapping("/{type}/{id}")
-    public void deleteCar(@PathVariable String type, @PathVariable Long id) {
-        carService.deleteCar(type, id);
+    public ResponseEntity<Void> deleteCar(@PathVariable String type, @PathVariable Long id) {
+        boolean deleted = carService.deleteCar(type, id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
 
