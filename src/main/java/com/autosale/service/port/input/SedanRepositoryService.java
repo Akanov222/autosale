@@ -5,6 +5,8 @@ import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
 import com.autosale.repository.factory.SedanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,6 +22,16 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     }
 
     @Override
+    public String getType() {
+        return CarTypeEnum.SEDAN.getCode();
+    }
+
+    @Override
+    public Page<Car> getAllCars(Pageable pageable) {
+        return sedanRepository.findAll(pageable).map(sedan -> sedan);
+    }
+
+    @Override
     public Optional<Car> getCarById(Long id) {
         return sedanRepository.findById(id).map(car -> car);
     }
@@ -32,10 +44,5 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     @Override
     public void deleteCarById(Long id) {
         sedanRepository.deleteById(id);
-    }
-
-    @Override
-    public String getType() {
-        return CarTypeEnum.SEDAN.getCode();
     }
 }

@@ -5,6 +5,10 @@ import com.autosale.dto.CarResponseDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.service.requestFactory.CarRequestFactory;
 import com.autosale.service.responseFactory.CarResponseFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +34,22 @@ public class CarService {
         this.repositoryServices = repositoryServices.stream().collect(Collectors
                 .toMap((CarRepositoryService::getType), s -> s));
     }
+
+    public Page<CarResponseDto> getAllCars(String type, int page, int size, String sortBy, String direction) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Page.empty();
+        }
+        Sort sort = Sort.by(Sort.Direction.fromString(direction != null ? direction : "ASC"),
+                sortBy != null ? sortBy : "id");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Car> cars = repositoryService.getAllCars(pageable);
+        return cars.map(car -> factory.createCarDto(type, car));
+    }
+
+
 
     public Optional<CarResponseDto> getCarById(String type, Long id) {
         final String upperCaseType = type.toUpperCase();

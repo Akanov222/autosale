@@ -51,7 +51,7 @@ CREATE TABLE truck (
                          FOREIGN KEY (car_type_id) REFERENCES car_type(id)
 );
 
-INSERT INTO sedan VALUES (100,'Chevrolet', 'COLODADO', 2010, 1,
+INSERT INTO sedan VALUES (101,'Chevrolet', 'COLODADO', 2010, 1,
                           25000.0,456.0);
 
 INSERT INTO truck VALUES (100,'Chevrolet', 'Tachoe', 2010, 2,

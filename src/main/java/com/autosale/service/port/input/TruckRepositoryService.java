@@ -4,6 +4,8 @@ import com.autosale.model.entity.car.Car;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.factory.TruckRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,16 @@ public class TruckRepositoryService implements CarRepositoryService {
 
     public TruckRepositoryService(TruckRepository truckRepository) {
         this.truckRepository = truckRepository;
+    }
+
+    @Override
+    public String getType() {
+        return CarTypeEnum.TRUCK.getCode();
+    }
+
+    @Override
+    public Page<Car> getAllCars(Pageable pageable) {
+        return truckRepository.findAll(pageable).map(truck -> truck);
     }
 
     @Override
@@ -31,10 +43,5 @@ public class TruckRepositoryService implements CarRepositoryService {
     @Override
     public Optional<Car> getCarById(Long id) {
         return truckRepository.findById(id).map(car -> car);
-    }
-
-    @Override
-    public String getType() {
-        return CarTypeEnum.TRUCK.getCode();
     }
 }

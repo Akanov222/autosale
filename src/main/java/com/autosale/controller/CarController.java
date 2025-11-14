@@ -5,6 +5,7 @@ import com.autosale.exception.InvalidCarTypeException;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,19 @@ import java.net.URI;
 public class CarController {
 
     private final CarService carService;
+
+    @GetMapping("/{type}")
+    public ResponseEntity<Page<CarResponseDto>> getAllCars(
+            @PathVariable String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String direction) {
+
+        Page<CarResponseDto> cars = carService.getAllCars(type, page, size, sortBy, direction);
+        return ResponseEntity.ok(cars);
+//        Пример запроса: GET /api/cars/sedan?page=0&size=5&sortBy=price&direction=DESC
+    }
 
     @GetMapping("/{type}/{id}")
     public ResponseEntity<CarResponseDto> getCarById(@PathVariable String type, @PathVariable Long id) {

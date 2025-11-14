@@ -2,6 +2,8 @@ package com.autosale.service.port.input;
 
 import com.autosale.dto.CarDto;
 import com.autosale.model.entity.car.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,7 +13,8 @@ public interface CarRepositoryService<T extends Car> {
 
     String getType();
     Optional<Car> saveCar(T car);
-    void deleteCarById(Long id);
     Optional<Car> getCarById(Long id);
+    void deleteCarById(Long id);
+    Page<Car> getAllCars(Pageable pageable);
 }
 
