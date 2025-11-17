@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -18,6 +19,13 @@ import java.net.URI;
 public class CarController {
 
     private final CarService carService;
+
+    @GetMapping("/{type}/{id}")
+    public ResponseEntity<CarResponseDto> getCarById(@PathVariable String type, @PathVariable Long id) {
+        return carService.getCarById(type, id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @GetMapping("/{type}")
     public ResponseEntity<Page<CarResponseDto>> getAllCars(
@@ -32,13 +40,6 @@ public class CarController {
 //        Пример запроса: GET /api/cars/sedan?page=0&size=5&sortBy=price&direction=DESC
     }
 
-    @GetMapping("/{type}/{id}")
-    public ResponseEntity<CarResponseDto> getCarById(@PathVariable String type, @PathVariable Long id) {
-        return carService.getCarById(type, id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @PostMapping("/{type}")
     public ResponseEntity<?> createCar(
             @PathVariable String type, @RequestBody CarDto requestDTO) {
@@ -48,6 +49,14 @@ public class CarController {
                                 .body(carResponseDto)
                 )
                 .orElseThrow(() -> new InvalidCarTypeException("Invalid car type: " + type));
+    }
+
+    @PutMapping("/{type}/{id}")
+    public ResponseEntity<?> updateCar(
+            @PathVariable String type, @PathVariable Long id, @RequestBody CarDto requestDTO) {
+        Optional<CarResponseDto> updateCar = carService.updateCar(type, id, requestDTO);
+        return updateCar.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{type}/{id}")

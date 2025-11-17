@@ -35,6 +35,17 @@ public class CarService {
                 .toMap((CarRepositoryService::getType), s -> s));
     }
 
+    public Optional<CarResponseDto> getCarById(String type, Long id) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Optional.empty();
+        }
+        Optional<Car> carOptional = repositoryService.getCarById(id);
+        return carOptional.flatMap(car -> Optional.ofNullable(factory.createCarDto(type, car)));
+    }
+
     public Page<CarResponseDto> getAllCars(String type, int page, int size, String sortBy, String direction) {
         final String upperCaseType = type.toUpperCase();
         CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
@@ -49,19 +60,6 @@ public class CarService {
         return cars.map(car -> factory.createCarDto(type, car));
     }
 
-
-
-    public Optional<CarResponseDto> getCarById(String type, Long id) {
-        final String upperCaseType = type.toUpperCase();
-        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
-        CarResponseFactory factory = responseFactories.get(upperCaseType);
-        if (repositoryService == null) {
-            return Optional.empty();
-        }
-        Optional<Car> carOptional = repositoryService.getCarById(id);
-        return carOptional.flatMap(car -> Optional.ofNullable(factory.createCarDto(type, car)));
-    }
-
     public Optional<CarResponseDto> saveCar(String type, CarDto carDto) {
         final String upperCaseType = type.toUpperCase();
         CarRequestFactory factory = requestFactories.get(upperCaseType);
@@ -72,9 +70,23 @@ public class CarService {
         }
         Car specificCar = factory.createCar(type, carDto);
         Optional<Car> carOptional = repositoryService.saveCar(specificCar);
-
         return carOptional.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
     }
+
+    public Optional<CarResponseDto> updateCar(String type, Long id, CarDto carDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRequestFactory factory = requestFactories.get(upperCaseType);
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (factory == null || repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
+        Car updateCar = factory.createCar(type, carDto);
+        updateCar.setId(id);
+        Optional<Car> savedCar = repositoryService.updateCar(updateCar);
+        return savedCar.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
+    }
+
 
     public boolean deleteCar(String type, Long id) {
         CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());

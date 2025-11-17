@@ -12,9 +12,10 @@ import java.util.Optional;
 public interface CarRepositoryService<T extends Car> {
 
     String getType();
-    Optional<Car> saveCar(T car);
     Optional<Car> getCarById(Long id);
-    void deleteCarById(Long id);
     Page<Car> getAllCars(Pageable pageable);
+    Optional<Car> saveCar(T car);
+    Optional<Car> updateCar(T car);
+    void deleteCarById(Long id);
 }
 

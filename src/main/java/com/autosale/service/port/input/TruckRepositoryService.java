@@ -25,6 +25,11 @@ public class TruckRepositoryService implements CarRepositoryService {
     }
 
     @Override
+    public void deleteCarById(Long id) {
+        truckRepository.deleteById(id);
+    }
+
+    @Override
     public Page<Car> getAllCars(Pageable pageable) {
         return truckRepository.findAll(pageable).map(truck -> truck);
     }
@@ -36,8 +41,12 @@ public class TruckRepositoryService implements CarRepositoryService {
     }
 
     @Override
-    public void deleteCarById(Long id) {
-        truckRepository.deleteById(id);
+    public Optional<Car> updateCar(Car car) {
+        Truck truck = (Truck) car;
+        if(!truckRepository.existsById(truck.getId())) {
+            return Optional.empty();
+        }
+        return Optional.of(truckRepository.save(truck));
     }
 
     @Override

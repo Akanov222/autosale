@@ -27,19 +27,28 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     }
 
     @Override
-    public Page<Car> getAllCars(Pageable pageable) {
-        return sedanRepository.findAll(pageable).map(sedan -> sedan);
+    public Optional<Car> getCarById(Long id) {
+        return sedanRepository.findById(id).map(car -> car);
     }
 
     @Override
-    public Optional<Car> getCarById(Long id) {
-        return sedanRepository.findById(id).map(car -> car);
+    public Page<Car> getAllCars(Pageable pageable) {
+        return sedanRepository.findAll(pageable).map(sedan -> sedan);
     }
 
     @Override
     public Optional<Car> saveCar(Sedan sedan) {
         return Optional.of(sedanRepository.save(sedan));
     }
+
+    @Override
+    public Optional<Car> updateCar(Sedan sedan) {
+        if(!sedanRepository.existsById(sedan.getId())) {
+            return Optional.empty();
+        }
+        return Optional.of(sedanRepository.save(sedan));
+    }
+
 
     @Override
     public void deleteCarById(Long id) {
