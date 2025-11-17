@@ -59,6 +59,15 @@ public class CarController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/{type}/{id}")
+    public ResponseEntity<?> partialUpdateCar(
+            @PathVariable String type, @PathVariable Long id, @RequestBody CarUpdateDto updateDto) {
+        Optional<CarResponseDto> updatedCar = carService.partialUpdateCar(type, id, updateDto);
+        return updatedCar.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
     @DeleteMapping("/{type}/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable String type, @PathVariable Long id) {
         boolean deleted = carService.deleteCar(type, id);

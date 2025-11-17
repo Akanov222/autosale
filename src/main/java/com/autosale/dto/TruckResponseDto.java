@@ -15,7 +15,6 @@ public class TruckResponseDto extends CarResponseDto {
 
     private Double loadCapacity;
 
-
     public TruckResponseDto(Long id, String brand, String model, Integer year,
                             CarType carTypeName, BigDecimal price,
                             Double loadCapacity) {

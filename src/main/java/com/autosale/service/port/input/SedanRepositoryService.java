@@ -1,5 +1,7 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarUpdateDto;
+import com.autosale.dto.SedanUpdateDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Sedan;
@@ -49,6 +51,36 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
         return Optional.of(sedanRepository.save(sedan));
     }
 
+    @Override
+    public Optional<Car> partialUpdateCar(Long id, CarUpdateDto updateDto) {
+        Optional<Sedan> existingCarOpt = sedanRepository.findById(id);
+
+        if (existingCarOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Sedan existingCar = existingCarOpt.get();
+        if (updateDto.getBrand() != null) {
+            existingCar.setBrand(updateDto.getBrand());
+        }
+        if (updateDto.getModel() != null) {
+            existingCar.setModel(updateDto.getModel());
+        }
+        if (updateDto.getYear() != null) {
+            existingCar.setYear(updateDto.getYear());
+        }
+        if (updateDto.getPrice() != null) {
+            existingCar.setPrice(updateDto.getPrice());
+        }
+
+        if (updateDto instanceof SedanUpdateDto sedanUpdate) {
+            if (sedanUpdate.getTrunkCapacity() != null) {
+                existingCar.setTrunkCapacity(sedanUpdate.getTrunkCapacity());
+            }
+        }
+        Sedan savedCar = sedanRepository.save(existingCar);
+        return Optional.of(savedCar);
+    }
 
     @Override
     public void deleteCarById(Long id) {

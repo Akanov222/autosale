@@ -1,6 +1,10 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarUpdateDto;
+import com.autosale.dto.SedanUpdateDto;
+import com.autosale.dto.TruckUpdateDto;
 import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.Sedan;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.factory.TruckRepository;
@@ -47,6 +51,37 @@ public class TruckRepositoryService implements CarRepositoryService {
             return Optional.empty();
         }
         return Optional.of(truckRepository.save(truck));
+    }
+
+    @Override
+    public Optional<Car> partialUpdateCar(Long id, CarUpdateDto updateDto) {
+        Optional<Truck> existingCarOpt = truckRepository.findById(id);
+
+        if (existingCarOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Truck existingCar = existingCarOpt.get();
+        if (updateDto.getBrand() != null) {
+            existingCar.setBrand(updateDto.getBrand());
+        }
+        if (updateDto.getModel() != null) {
+            existingCar.setModel(updateDto.getModel());
+        }
+        if (updateDto.getYear() != null) {
+            existingCar.setYear(updateDto.getYear());
+        }
+        if (updateDto.getPrice() != null) {
+            existingCar.setPrice(updateDto.getPrice());
+        }
+
+        if (updateDto instanceof TruckUpdateDto truckUpdate) {
+            if (truckUpdate.getLoadCapacity() != null) {
+                existingCar.setLoadCapacity(truckUpdate.getLoadCapacity());
+            }
+        }
+        Truck savedCar = truckRepository.save(existingCar);
+        return Optional.of(savedCar);
     }
 
     @Override

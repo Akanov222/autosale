@@ -1,6 +1,7 @@
 package com.autosale.service.port.input;
 
 import com.autosale.dto.CarDto;
+import com.autosale.dto.CarUpdateDto;
 import com.autosale.model.entity.car.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ public interface CarRepositoryService<T extends Car> {
     Page<Car> getAllCars(Pageable pageable);
     Optional<Car> saveCar(T car);
     Optional<Car> updateCar(T car);
+    Optional<Car> partialUpdateCar(Long id, CarUpdateDto updateDto);
     void deleteCarById(Long id);
 }
 

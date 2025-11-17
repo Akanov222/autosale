@@ -2,6 +2,7 @@ package com.autosale.service.port.input;
 
 import com.autosale.dto.CarDto;
 import com.autosale.dto.CarResponseDto;
+import com.autosale.dto.CarUpdateDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.service.requestFactory.CarRequestFactory;
 import com.autosale.service.responseFactory.CarResponseFactory;
@@ -87,6 +88,16 @@ public class CarService {
         return savedCar.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
     }
 
+    public Optional<CarResponseDto> partialUpdateCar(String type, Long id, CarUpdateDto carUpdateDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
+        Optional<Car> updatedCar = repositoryService.partialUpdateCar(id, carUpdateDto);
+        return updatedCar.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
+    }
 
     public boolean deleteCar(String type, Long id) {
         CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());

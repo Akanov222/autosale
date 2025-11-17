@@ -1,6 +1,10 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarUpdateDto;
+import com.autosale.dto.MinivanUpdateDto;
+import com.autosale.dto.SedanUpdateDto;
 import com.autosale.model.entity.car.Car;
+import com.autosale.model.entity.car.Sedan;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Minivan;
@@ -48,6 +52,37 @@ public class MinivanRepositoryService implements CarRepositoryService {
             return Optional.empty();
         }
         return Optional.of(minivanRepository.save(minivan));
+    }
+
+    @Override
+    public Optional<Car> partialUpdateCar(Long id, CarUpdateDto updateDto) {
+        Optional<Minivan> existingCarOpt = minivanRepository.findById(id);
+
+        if (existingCarOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Minivan existingCar = existingCarOpt.get();
+        if (updateDto.getBrand() != null) {
+            existingCar.setBrand(updateDto.getBrand());
+        }
+        if (updateDto.getModel() != null) {
+            existingCar.setModel(updateDto.getModel());
+        }
+        if (updateDto.getYear() != null) {
+            existingCar.setYear(updateDto.getYear());
+        }
+        if (updateDto.getPrice() != null) {
+            existingCar.setPrice(updateDto.getPrice());
+        }
+
+        if (updateDto instanceof MinivanUpdateDto minivanUpdate) {
+            if (minivanUpdate.getSeatingCapacity() != null) {
+                existingCar.setSeatingCapacity(minivanUpdate.getSeatingCapacity());
+            }
+        }
+        Minivan savedCar = minivanRepository.save(existingCar);
+        return Optional.of(savedCar);
     }
 
     @Override
