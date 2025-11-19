@@ -67,7 +67,6 @@ public class CarController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @DeleteMapping("/{type}/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable String type, @PathVariable Long id) {
         boolean deleted = carService.deleteCar(type, id);
