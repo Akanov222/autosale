@@ -1,6 +1,6 @@
 package com.autosale.service.port.input;
 
-import com.autosale.dto.CarDto;
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.dto.CarUpdateDto;
 import com.autosale.model.entity.car.Car;
 import org.springframework.data.domain.Page;
@@ -19,5 +19,8 @@ public interface CarRepositoryService<T extends Car> {
     Optional<Car> updateCar(T car);
     Optional<Car> partialUpdateCar(Long id, CarUpdateDto updateDto);
     void deleteCarById(Long id);
+
+    Page<Car> searchCars(CarSearchCriteria criteria, Pageable pageable);
+
 }
 

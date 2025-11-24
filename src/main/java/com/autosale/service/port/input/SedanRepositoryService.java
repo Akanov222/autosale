@@ -1,5 +1,6 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.dto.CarUpdateDto;
 import com.autosale.dto.SedanUpdateDto;
 import com.autosale.model.entity.car.Car;
@@ -31,6 +32,11 @@ public class SedanRepositoryService implements CarRepositoryService<Sedan> {
     @Override
     public Optional<Car> getCarById(Long id) {
         return sedanRepository.findById(id).map(car -> car);
+    }
+
+    @Override
+    public Page<Car> searchCars(CarSearchCriteria criteria, Pageable pageable) {
+        return sedanRepository.searchSedans(criteria, pageable).map(sedan -> sedan);
     }
 
     @Override

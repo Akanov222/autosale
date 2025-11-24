@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Optional;
 
@@ -25,6 +26,32 @@ public class CarController {
         return carService.getCarById(type, id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{type}/search")
+    public ResponseEntity<Page<CarResponseDto>> searchCars(
+            @PathVariable(required = false) String type,
+            @PathVariable(required = false) String brand,
+            @PathVariable(required = false) String model,
+            @RequestParam(required = false) Integer minYear,
+            @RequestParam(required = false)  Integer maxYear,
+            @RequestParam(required = false)  BigDecimal minPrice,
+            @RequestParam(required = false)  BigDecimal maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        CarSearchCriteria criteria = CarSearchCriteria.builder()
+                .brand(brand)
+                .model(model)
+                .minYear(minYear)
+                .maxYear(maxYear)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+
+        Page<CarResponseDto> result = carService.searchCars(type, criteria, page, size);
+        return ResponseEntity.ok(result);
+
     }
 
     @GetMapping("/{type}")

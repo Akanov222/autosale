@@ -2,6 +2,7 @@ package com.autosale.service.port.input;
 
 import com.autosale.dto.CarDto;
 import com.autosale.dto.CarResponseDto;
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.dto.CarUpdateDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.service.requestFactory.CarRequestFactory;
@@ -58,6 +59,18 @@ public class CarService {
                 sortBy != null ? sortBy : "id");
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Car> cars = repositoryService.getAllCars(pageable);
+        return cars.map(car -> factory.createCarDto(type, car));
+    }
+
+    public Page<CarResponseDto> searchCars(String type, CarSearchCriteria criteria, int page, int size) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Page.empty();
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Car> cars = repositoryService.searchCars(criteria, pageable);
         return cars.map(car -> factory.createCarDto(type, car));
     }
 

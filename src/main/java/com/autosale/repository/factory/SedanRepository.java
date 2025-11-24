@@ -1,5 +1,6 @@
 package com.autosale.repository.factory;
 
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.model.entity.car.Sedan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SedanRepository extends JpaRepository<Sedan, Long> {
     Page<Sedan> findAll(Pageable pageable);
+    Page<Sedan> searchSedans(CarSearchCriteria criteria, Pageable pageable);
+
 }
