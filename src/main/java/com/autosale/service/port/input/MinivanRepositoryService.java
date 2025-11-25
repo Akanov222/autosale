@@ -1,11 +1,9 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.dto.CarUpdateDto;
 import com.autosale.dto.MinivanUpdateDto;
-import com.autosale.dto.SedanUpdateDto;
 import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.Sedan;
-import com.autosale.model.entity.car.Truck;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Minivan;
 import com.autosale.repository.factory.MinivanRepository;
@@ -32,6 +30,11 @@ public class MinivanRepositoryService implements CarRepositoryService {
     @Override
     public Optional<Car> getCarById(Long id) {
         return minivanRepository.findById(id).map(car -> car);
+    }
+
+    @Override
+    public Page<Car> searchCars(CarSearchCriteria criteria, Pageable pageable) {
+        return minivanRepository.searchMinivans(criteria, pageable).map(minivan -> minivan);
     }
 
     @Override

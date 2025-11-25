@@ -1,4 +1,4 @@
-INSERT INTO sedan (brand, model, year, car_type_id, price, trunk_capacity) VALUES
+INSERT INTO cardealer_db.public.sedan (brand, model, year, car_type_id, price, trunk_capacity) VALUES
                                                                                ('Toyota', 'Camry', 2020, 1, 28500.0, 480.0),
                                                                                ('Honda', 'Accord', 2021, 1, 29500.0, 472.0),
                                                                                ('BMW', '3 Series', 2022, 1, 41500.0, 480.0),

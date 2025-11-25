@@ -1,10 +1,9 @@
 package com.autosale.service.port.input;
 
+import com.autosale.dto.CarSearchCriteria;
 import com.autosale.dto.CarUpdateDto;
-import com.autosale.dto.SedanUpdateDto;
 import com.autosale.dto.TruckUpdateDto;
 import com.autosale.model.entity.car.Car;
-import com.autosale.model.entity.car.Sedan;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.model.entity.car.Truck;
 import com.autosale.repository.factory.TruckRepository;
@@ -31,6 +30,11 @@ public class TruckRepositoryService implements CarRepositoryService {
     @Override
     public void deleteCarById(Long id) {
         truckRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Car> searchCars(CarSearchCriteria criteria, Pageable pageable) {
+        return truckRepository.searchTrucks(criteria, pageable).map(truck -> truck);
     }
 
     @Override

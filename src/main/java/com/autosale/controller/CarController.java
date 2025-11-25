@@ -30,9 +30,9 @@ public class CarController {
 
     @GetMapping("/{type}/search")
     public ResponseEntity<Page<CarResponseDto>> searchCars(
-            @PathVariable(required = false) String type,
-            @PathVariable(required = false) String brand,
-            @PathVariable(required = false) String model,
+            @PathVariable String type,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String model,
             @RequestParam(required = false) Integer minYear,
             @RequestParam(required = false)  Integer maxYear,
             @RequestParam(required = false)  BigDecimal minPrice,
@@ -51,7 +51,7 @@ public class CarController {
 
         Page<CarResponseDto> result = carService.searchCars(type, criteria, page, size);
         return ResponseEntity.ok(result);
-
+//        Пример запроса: GET /api/cars/sedan/search?brand=Mercedes&model=S-Class&minYear=2020&maxYear=2023&minPrice=80000&maxPrice=100000&page=0&size=10
     }
 
     @GetMapping("/{type}")

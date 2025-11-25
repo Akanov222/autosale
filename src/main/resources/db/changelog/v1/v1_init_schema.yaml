@@ -277,3 +277,288 @@ databaseChangeLog:
               - column:
                   name: seating_capacity
                   value: 8.0
+
+
+
+
+  - changeSet:
+      id: create-index-sedan-brand
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_sedan_brand
+                tableName: sedan
+      changes:
+        - createIndex:
+            indexName: idx_sedan_brand
+            tableName: sedan
+#            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+
+  - changeSet:
+      id: create-index-sedan-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_sedan_model
+                tableName: sedan
+      changes:
+        - createIndex:
+            indexName: idx_sedan_model
+            tableName: sedan
+#            ifNotExists: true
+            columns:
+              - column:
+                  name: model
+
+  - changeSet:
+      id: create-index-sedan-year
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_sedan_year
+                tableName: sedan
+      changes:
+        - createIndex:
+            indexName: idx_sedan_year
+            tableName: sedan
+#            ifNotExists: true
+            columns:
+              - column:
+                  name: year
+
+  - changeSet:
+      id: create-index-sedan-price
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_sedan_price
+                tableName: sedan
+      changes:
+        - createIndex:
+            indexName: idx_sedan_price
+            tableName: sedan
+#            ifNotExists: true
+            columns:
+              - column:
+                  name: price
+
+  - changeSet:
+      id: create-index-sedan-brand-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_sedan_brand_model
+                tableName: sedan
+      changes:
+        - createIndex:
+            indexName: idx_sedan_brand_model
+            tableName: sedan
+#            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+              - column:
+                  name: model
+
+
+
+
+  - changeSet:
+      id: create-index-minivan-brand
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_minivan_brand
+                tableName: minivan
+      changes:
+        - createIndex:
+            indexName: idx_minivan_brand
+            tableName: minivan
+            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+
+  - changeSet:
+      id: create-index-minivan-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_minivan_model
+                tableName: minivan
+      changes:
+        - createIndex:
+            indexName: idx_minivan_model
+            tableName: minivan
+            ifNotExists: true
+            columns:
+              - column:
+                  name: model
+
+  - changeSet:
+      id: create-index-minivan-year
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_minivan_year
+                tableName: minivan
+      changes:
+        - createIndex:
+            indexName: idx_minivan_year
+            tableName: minivan
+            ifNotExists: true
+            columns:
+              - column:
+                  name: year
+
+  - changeSet:
+      id: create-index-minivan-price
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_minivan_price
+                tableName: minivan
+      changes:
+        - createIndex:
+            indexName: idx_minivan_price
+            tableName: minivan
+            ifNotExists: true
+            columns:
+              - column:
+                  name: price
+
+  - changeSet:
+      id: create-index-minivan-brand-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_minivan_brand_model
+                tableName: minivan
+      changes:
+        - createIndex:
+            indexName: idx_minivan_brand_model
+            tableName: minivan
+            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+              - column:
+                  name: model
+
+
+
+
+  - changeSet:
+      id: create-index-truck-brand
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_truck_brand
+                tableName: truck
+      changes:
+        - createIndex:
+            indexName: idx_truck_brand
+            tableName: truck
+            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+
+  - changeSet:
+      id: create-index-truck-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_truck_model
+                tableName: truck
+      changes:
+        - createIndex:
+            indexName: idx_truck_model
+            tableName: truck
+            ifNotExists: true
+            columns:
+              - column:
+                  name: model
+
+  - changeSet:
+      id: create-index-truck-year
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_truck_year
+                tableName: truck
+      changes:
+        - createIndex:
+            indexName: idx_truck_year
+            tableName: truck
+            ifNotExists: true
+            columns:
+              - column:
+                  name: year
+
+  - changeSet:
+      id: create-index-truck-price
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_truck_price
+                tableName: truck
+      changes:
+        - createIndex:
+            indexName: idx_truck_price
+            tableName: truck
+            ifNotExists: true
+            columns:
+              - column:
+                  name: price
+
+  - changeSet:
+      id: create-index-truck-brand-model
+      author: yourname
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                indexName: idx_truck_brand_model
+                tableName: truck
+      changes:
+        - createIndex:
+            indexName: idx_truck_brand_model
+            tableName: truck
+            ifNotExists: true
+            columns:
+              - column:
+                  name: brand
+              - column:
+                  name: model
