@@ -4,7 +4,6 @@ import com.autosale.model.enums.CarTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,18 +13,17 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SedanDto extends CarDto {
+public class SedanUpdateDto extends CarUpdateDto {
 
     @JsonProperty("trunkCapacity")
-    @NotBlank (message = "trunkCapacity must not be blank" )
-    @Min(value = 10)
-    @Max(value = 4000)
+    @Min(value = 10, message = "Trunk capacity must be at least 10")
+    @Max(value = 4000, message = "Trunk capacity must be at most 4000")
     private Double trunkCapacity;
 
-    public SedanDto(String brand, String model, Integer year,
+    public SedanUpdateDto(String brand, String model, Integer year,
                     String carTypeName, BigDecimal price,
                     Double trunkCapacity) {
-        super(brand, model, year, carTypeName, price);
+        super(brand, model, year, price, carTypeName);
         this.trunkCapacity = trunkCapacity;
         System.out.println("SEDAN is created");
     }
@@ -33,12 +31,5 @@ public class SedanDto extends CarDto {
     @Override
     public String getCarTypeName() {
         return CarTypeEnum.SEDAN.getCode();
-    }
-
-    @Override
-    public String toString() {
-        return "SedanRequestDTO{" +
-                "trunkCapacity=" + trunkCapacity +
-                '}';
     }
 }

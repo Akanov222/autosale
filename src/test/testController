@@ -1,0 +1,19 @@
+#!/bin/bash
+BASE_URL="http://localhost:8080/api/cars/sedan"
+
+echo "=== GET all cars ==="
+curl -X GET $BASE_URL | jq .
+echo -e "\n"
+
+echo "=== CREATE new car ==="
+CREATE_RESPONSE=$(curl -s -X POST $BASE_URL \
+  -H "Content-Type: application/json" \
+  -d '{
+    "brand": "Chevrolet",
+    "model": "Lacetti",
+    "year": 2005,
+    "carTypeName": "sedan",
+    "price": 20000.00,
+    "trunkCapacity": 220.0
+}')
+echo $CREATE_RESPONSE | jq .

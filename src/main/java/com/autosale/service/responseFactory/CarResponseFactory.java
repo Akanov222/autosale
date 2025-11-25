@@ -1,6 +1,7 @@
 package com.autosale.service.responseFactory;
 
 import com.autosale.dto.CarDto;
+import com.autosale.dto.CarResponseDto;
 import com.autosale.model.entity.car.Car;
 import org.springframework.stereotype.Component;
 
@@ -8,5 +9,5 @@ import org.springframework.stereotype.Component;
 public interface CarResponseFactory<T extends Car> {
 
     String getType();
-    CarDto createCarDto(String type, T car);
+    CarResponseDto createCarDto(String type, T car);
 }

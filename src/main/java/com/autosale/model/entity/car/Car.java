@@ -19,6 +19,10 @@ import java.math.BigDecimal;
 @MappedSuperclass
 public abstract class Car {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank(message = "Brand can not be blank!")
     private String brand;
 
@@ -34,4 +38,12 @@ public abstract class Car {
 
     @PositiveOrZero(message = "Price must be positive or zero!")
     private BigDecimal price;
+
+    public Car(String brand, String model, Integer year, CarType carType, BigDecimal price) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.carType = carType;
+        this.price = price;
+    }
 }

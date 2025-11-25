@@ -51,7 +51,7 @@ CREATE TABLE truck (
                          FOREIGN KEY (car_type_id) REFERENCES car_type(id)
 );
 
-INSERT INTO sedan VALUES (100,'Chevrolet', 'COLODADO', 2010, 1,
+INSERT INTO sedan VALUES (101,'Chevrolet', 'COLODADO', 2010, 1,
                           25000.0,456.0);
 
 INSERT INTO truck VALUES (100,'Chevrolet', 'Tachoe', 2010, 2,
@@ -63,3 +63,22 @@ INSERT INTO minivan VALUES (100,'Chevrolet', 'MINIVAN', 2010, 3,
 SELECT * FROM sedan;
 SELECT * FROM minivan;
 SELECT * FROM truck;
+
+CREATE INDEX idx_sedan_brand ON sedan (brand);
+CREATE INDEX idx_sedan_model ON sedan (model);
+CREATE INDEX idx_sedan_year ON sedan (year);
+CREATE INDEX idx_sedan_price ON sedan (price);
+CREATE INDEX idx_sedan_brand_model ON sedan (brand, model);
+
+CREATE INDEX idx_truck_brand ON truck (brand);
+CREATE INDEX idx_truck_model ON truck (model);
+CREATE INDEX idx_truck_year ON truck (year);
+CREATE INDEX idx_truck_price ON truck (price);
+CREATE INDEX idx_truck_brand_model ON truck (brand, model);
+
+CREATE INDEX idx_minivan_brand ON minivan (brand);
+CREATE INDEX idx_minivan_model ON minivan (model);
+CREATE INDEX idx_minivan_year ON minivan (year);
+CREATE INDEX idx_minivan_price ON minivan (price);
+CREATE INDEX idx_minivan_brand_model ON minivan (brand, model);
+

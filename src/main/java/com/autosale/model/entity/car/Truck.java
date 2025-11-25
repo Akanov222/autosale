@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @Table(name = "truck")
 public class Truck extends Car{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Getter
     @Setter

@@ -1,7 +1,7 @@
 package com.autosale.dto;
 
+import com.autosale.model.entity.car.CarType;
 import com.autosale.model.enums.CarTypeEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,15 +11,14 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TruckDto extends CarDto {
+public class TruckResponseDto extends CarResponseDto {
 
-    @JsonProperty("loadCapacity")
     private Double loadCapacity;
 
-    public TruckDto(String brand, String model, Integer year,
-                    String carTypeName, BigDecimal price,
-                    Double loadCapacity) {
-        super(brand, model, year, carTypeName, price);
+    public TruckResponseDto(Long id, String brand, String model, Integer year,
+                            CarType carTypeName, BigDecimal price,
+                            Double loadCapacity) {
+        super(id, brand, model, year, carTypeName, price);
         this.loadCapacity = loadCapacity;
     }
 

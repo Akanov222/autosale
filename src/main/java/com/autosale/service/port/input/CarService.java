@@ -1,13 +1,21 @@
 package com.autosale.service.port.input;
 
 import com.autosale.dto.CarDto;
+import com.autosale.dto.CarResponseDto;
+import com.autosale.dto.CarSearchCriteria;
+import com.autosale.dto.CarUpdateDto;
 import com.autosale.model.entity.car.Car;
 import com.autosale.service.requestFactory.CarRequestFactory;
 import com.autosale.service.responseFactory.CarResponseFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,22 +37,91 @@ public class CarService {
                 .toMap((CarRepositoryService::getType), s -> s));
     }
 
-    public void saveCar(String type, CarDto carDTO) {
-        CarRequestFactory factory = requestFactories.get(type.toUpperCase());
-        Car specificCar = factory.createCar(type, carDTO);
-        CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
-        repositoryService.saveCar(specificCar);
+    public Optional<CarResponseDto> getCarById(String type, Long id) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Optional.empty();
+        }
+        Optional<Car> carOptional = repositoryService.getCarById(id);
+        return carOptional.flatMap(car -> Optional.ofNullable(factory.createCarDto(type, car)));
     }
 
-    public void deleteCar(String type, Long id) {
+    public Page<CarResponseDto> getAllCars(String type, int page, int size, String sortBy, String direction) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Page.empty();
+        }
+        Sort sort = Sort.by(Sort.Direction.fromString(direction != null ? direction : "ASC"),
+                sortBy != null ? sortBy : "id");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Car> cars = repositoryService.getAllCars(pageable);
+        return cars.map(car -> factory.createCarDto(type, car));
+    }
+
+    public Page<CarResponseDto> searchCars(String type, CarSearchCriteria criteria, int page, int size) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factory = responseFactories.get(upperCaseType);
+        if (repositoryService == null) {
+            return Page.empty();
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Car> cars = repositoryService.searchCars(criteria, pageable);
+        return cars.map(car -> factory.createCarDto(type, car));
+    }
+
+    public Optional<CarResponseDto> saveCar(String type, CarDto carDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRequestFactory factory = requestFactories.get(upperCaseType);
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (factory == null || repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
+        Car specificCar = factory.createCar(type, carDto);
+        Optional<Car> carOptional = repositoryService.saveCar(specificCar);
+        return carOptional.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
+    }
+
+    public Optional<CarResponseDto> updateCar(String type, Long id, CarDto carDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRequestFactory factory = requestFactories.get(upperCaseType);
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (factory == null || repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
+        Car updateCar = factory.createCar(type, carDto);
+        updateCar.setId(id);
+        Optional<Car> savedCar = repositoryService.updateCar(updateCar);
+        return savedCar.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
+    }
+
+    public Optional<CarResponseDto> partialUpdateCar(String type, Long id, CarUpdateDto carUpdateDto) {
+        final String upperCaseType = type.toUpperCase();
+        CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
+        CarResponseFactory factoryResponse = responseFactories.get(upperCaseType);
+        if (repositoryService == null || factoryResponse == null) {
+            return Optional.empty();
+        }
+        Optional<Car> updatedCar = repositoryService.partialUpdateCar(id, carUpdateDto);
+        return updatedCar.flatMap(car -> Optional.ofNullable(factoryResponse.createCarDto(type, car)));
+    }
+
+    public boolean deleteCar(String type, Long id) {
         CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
+        if (repositoryService == null) {
+            return false;
+        }
+        Optional<Car> carOptional = repositoryService.getCarById(id);
+        if (carOptional.isEmpty()) {
+            return false;
+        }
         repositoryService.deleteCarById(id);
-    }
-
-    public CarDto getCarById(String type, Long id) {
-        CarRepositoryService repositoryService = repositoryServices.get(type.toUpperCase());
-        CarResponseFactory factory = responseFactories.get(type.toUpperCase());
-        Car car = repositoryService.getCarById(id);
-        return factory.createCarDto(type, car);
+        return true;
     }
 }
