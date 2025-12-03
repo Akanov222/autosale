@@ -10,4 +10,5 @@ public interface CarResponseFactory<T extends Car> {
 
     String getType();
     CarResponseDto createCarDto(String type, T car);
+    CarDto carToDto(String type, T car);
 }

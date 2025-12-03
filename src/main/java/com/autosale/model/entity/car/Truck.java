@@ -1,5 +1,6 @@
 package com.autosale.model.entity.car;
 
+import com.autosale.model.enums.CarTypeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,14 @@ public class Truck extends Car{
     @Column(name = "load_capacity")
     private Double loadCapacity;
 
-    public Truck(String brand, String model,
+    public Truck(Long id, String brand, String model,
                  Integer year, CarType carType, BigDecimal price, Double loadCapacity) {
-        super(brand, model, year, carType, price);
+        super(id, brand, model, year, carType, price);
         this.loadCapacity = loadCapacity;
+    }
+
+    @Override
+    public String getCarTypeName() {
+        return CarTypeEnum.TRUCK.getCode();
     }
 }

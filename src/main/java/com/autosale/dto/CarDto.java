@@ -6,16 +6,17 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
+@Getter
 @Setter
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "carTypeName")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SedanDto.class, name = "sedan"),
@@ -24,27 +25,23 @@ import java.math.BigDecimal;
 })
 public abstract class CarDto {
 
-    @Getter
+    private Long id;
+
     @NotBlank (message = "brand must not be blank" )
     private String brand;
 
-    @Getter
     @NotBlank (message = "model must not be blank" )
     private String model;
 
-    @Getter
     @NotNull (message = "year must not be null" )
-    @Min (value = 1800)
-    @Max(value = 2050)
+    @Min (1800) @Max(2050)
     private Integer year;
 
     @NotBlank (message = "car type name must not be blank" )
     private String carTypeName;
 
-    @Getter
     @NotNull (message = "price must not be null" )
-//    @Min (value = 100)
-//    @Max(value = 10_000_000)
+    @Min (100) @Max(10_000_000)
     private BigDecimal price;
 
     public abstract String getCarTypeName();

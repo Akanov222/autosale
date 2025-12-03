@@ -46,4 +46,6 @@ public abstract class Car {
         this.carType = carType;
         this.price = price;
     }
+
+    public abstract String getCarTypeName();
 }

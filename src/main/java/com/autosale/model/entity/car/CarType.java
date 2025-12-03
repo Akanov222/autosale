@@ -1,3 +1,4 @@
+
 package com.autosale.model.entity.car;
 
 import jakarta.persistence.*;

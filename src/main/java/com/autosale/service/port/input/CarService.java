@@ -48,7 +48,7 @@ public class CarService {
         return carOptional.flatMap(car -> Optional.ofNullable(factory.createCarDto(type, car)));
     }
 
-    public Page<CarResponseDto> getAllCars(String type, int page, int size, String sortBy, String direction) {
+    public Page<CarDto> getAllCars(String type, int page, int size, String sortBy, String direction) {
         final String upperCaseType = type.toUpperCase();
         CarRepositoryService repositoryService = repositoryServices.get(upperCaseType);
         CarResponseFactory factory = responseFactories.get(upperCaseType);
@@ -59,7 +59,8 @@ public class CarService {
                 sortBy != null ? sortBy : "id");
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Car> cars = repositoryService.getAllCars(pageable);
-        return cars.map(car -> factory.createCarDto(type, car));
+//        return cars.map(car -> factory.createCarDto(type, car));
+        return cars.map(car -> factory.carToDto(type, car));
     }
 
     public Page<CarResponseDto> searchCars(String type, CarSearchCriteria criteria, int page, int size) {

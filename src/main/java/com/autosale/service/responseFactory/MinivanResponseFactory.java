@@ -1,9 +1,7 @@
 package com.autosale.service.responseFactory;
 
-import com.autosale.dto.CarDto;
-import com.autosale.dto.CarResponseDto;
-import com.autosale.dto.MinivanDto;
-import com.autosale.dto.MinivanResponseDto;
+import com.autosale.dto.*;
+import com.autosale.mapper.MinivanMapper;
 import com.autosale.model.entity.car.*;
 import com.autosale.model.enums.CarTypeEnum;
 import com.autosale.repository.factory.CarTypeRepository;
@@ -14,10 +12,12 @@ import org.springframework.stereotype.Component;
 public class MinivanResponseFactory implements CarResponseFactory {
 
     private final CarTypeRepository repository;
+    private final MinivanMapper minivanMapper;
 
     @Autowired
-    public MinivanResponseFactory(CarTypeRepository repository) {
+    public MinivanResponseFactory(CarTypeRepository repository, MinivanMapper minivanMapper) {
         this.repository = repository;
+        this.minivanMapper = minivanMapper;
     }
 
     @Override
@@ -43,5 +43,17 @@ public class MinivanResponseFactory implements CarResponseFactory {
         minivanDto.setPrice(car.getPrice());
         minivanDto.setSeatingCapacity(((Minivan)car).getSeatingCapacity());
         return minivanDto;
+    }
+
+    @Override
+    public CarDto carToDto(String type, Car car) {
+//        CarTypeEnum carTypeEnum = CarTypeEnum.MINIVAN;
+//        if (!carTypeEnum.getCode().equalsIgnoreCase(type)) {
+//            throw new IllegalArgumentException("MinivanFactory can only create minivans");
+//        }
+//        CarType carType = repository.findByName(carTypeEnum.getCode())
+//                .orElseThrow(() -> new IllegalArgumentException("CarType not found"));
+//        MinivanDto minivanDto = new MinivanDto();
+        return minivanMapper.toDto((Minivan) car);
     }
 }

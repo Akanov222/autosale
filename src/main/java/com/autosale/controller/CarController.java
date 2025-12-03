@@ -2,6 +2,7 @@ package com.autosale.controller;
 
 import com.autosale.dto.*;
 import com.autosale.exception.InvalidCarTypeException;
+import com.autosale.model.entity.car.Car;
 import com.autosale.service.port.input.CarService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class CarController {
 //        Пример запроса: GET /api/cars/sedan/search?brand=Mercedes&model=S-Class&minYear=2020&maxYear=2023&minPrice=80000&maxPrice=100000&page=0&size=10
     }
 
-    @GetMapping("/{type}")
+/*    @GetMapping("/{type}")
     public ResponseEntity<Page<CarResponseDto>> getAllCars(
             @PathVariable String type,
             @RequestParam(defaultValue = "0") int page,
@@ -63,6 +64,19 @@ public class CarController {
             @RequestParam(required = false) String direction) {
 
         Page<CarResponseDto> cars = carService.getAllCars(type, page, size, sortBy, direction);
+        return ResponseEntity.ok(cars);
+//        Пример запроса: GET /api/cars/sedan?page=0&size=5&sortBy=price&direction=DESC
+    }   */
+
+    @GetMapping("/{type}")
+    public ResponseEntity<Page<CarDto>> getAllCars(
+            @PathVariable String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String direction) {
+
+        Page<CarDto> cars = carService.getAllCars(type, page, size, sortBy, direction);
         return ResponseEntity.ok(cars);
 //        Пример запроса: GET /api/cars/sedan?page=0&size=5&sortBy=price&direction=DESC
     }
